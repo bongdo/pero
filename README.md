@@ -1,50 +1,138 @@
 # pero
 
-Терминальный редактор для себя: немодальный, вкладки, мышь, ghost-подсказки, LSP.
-Go + [Bubble Tea v2](https://github.com/charmbracelet/bubbletea).
+A modeless terminal code editor with tabs, mouse, LSP and ghost suggestions.
+Built with [Bubble Tea v2](https://github.com/charmbracelet/bubbletea) and
+[chroma](https://github.com/alecthomas/chroma).
 
-Почему свой, а не micro: в micro нет слоя виджетов — только буфер, однострочный инфобар
-и сплиты. Ghost-текст и popup-меню там невозможны без патча на Go.
+![pero](docs/screenshots/pero.png)
 
-## Документация
+`pero` is not a Vim clone. Letters always type text; actions live on `Ctrl`,
+`Alt` and function keys. The editor is also not a minimal `$EDITOR`: it has
+tabs, a fuzzy file opener, a session that survives restarts, syntax
+highlighting, diagnostics and inline completion.
 
-Вся база знаний — Obsidian-vault в [`docs/`](docs/00%20MOC.md):
+## Features
 
-- [`docs/00 MOC.md`](docs/00%20MOC.md) — точка входа.
-- `docs/UX/` — экраны, примитивы, клавиши, мышь (это главное).
-- `docs/Домен/` — язык, Prose/Code, контексты.
-- `docs/Инженерия/` — архитектура, стек, референс felix-tui, решения.
+- **Tabs and session** — open files in tabs, restore tabs and cursor positions
+  on the next launch.
+- **Modeless editing** — selections with mouse or keyboard, undo/redo with
+  grouped edits, autopairs, bracket wrapping, smart Backspace/Enter/Home.
+- **Search and replace** — `Ctrl-F` and `Ctrl-H`, with visible matches.
+- **Fuzzy open** — `Ctrl-P` searches files in the project and recent files.
+- **Command palette** — `Ctrl-E` opens a filterable list of commands; the path
+  mode (`Ctrl-P` inside the palette) opens files by path.
+- **LSP** — diagnostics, hover, definition, references, formatting, completion,
+  quickfix and signature help. Servers are configured per filetype.
+- **Ghost text** — suggestions from LSP and words already in the buffer, shown
+  after 250 ms; `Tab` accepts the current suggestion.
+- **AI assist** — `Alt-a` sends the selection to `opencode run` and inserts the
+  result after confirmation; the UI never blocks on it.
+- **Themes and language** — 33 syntax themes, `theme` in the config; the UI is
+  available in English and Russian (`language = "en" | "ru"`).
+- **Markdown care** — checkbox toggle (`Alt-t`), list continuation, spell check
+  through ltex/harper, and a softwrap mode for prose.
 
-Порядок чтения: UX → домен → инженерия.
+## Install
 
-## Запуск
+Requires Go 1.26+ and a truecolor terminal.
 
 ```sh
-go run .                 # пустой буфер
-go run . ~/todo.md       # файл
-go run . .               # папка = проект
-go build -o pero .
-go test ./...
+go install github.com/bongdo/pero@latest
+pero
 ```
 
-## Статус
+From a checkout:
 
-M1–M8 реализованы: вкладки, undo/redo, выделение и мышь, поиск/замена, fuzzy open,
-сессия, chroma, TOML-конфиг и 33 темы, softwrap, контекстное меню, LSP (диагностики,
-hover/definition/references/format, quickfix, completion), ghost/t9 и AI через
-`Alt-a`/`opencode`. Интерфейс двуязычный (`language = "en" | "ru"`, по умолчанию
-английский), есть autopairs и обёртка выделения скобками. Живые проверки, которые
-остались, — в `TODO.md`.
+```sh
+go build -o pero .
+./pero
+```
 
-## Конфиг
+Open a file, a directory, or an empty buffer:
 
-- `~/.config/pero/config.toml` — тема (33 палитры), язык EN/RU, редактор, autopairs,
-  markdown, LSP, ignore, биндинги.
-- `~/.local/state/pero/state.toml` — вкладки, позиции, недавние файлы и команды.
-- Смена темы в UI (`Ctrl-E` → `Theme…`) сразу сохраняется в `config.toml`.
+```sh
+pero                       # empty buffer in the current project
+pero main.go               # file
+pero ~/notes               # directory = project root
+pero -                     # explicitly empty buffer
+```
 
-## Референс
+## Keys
 
-Архитектурные приёмы (оверлеи, геометрия, мышь, темы) взяты из
-[`felix-tui`](docs/Инженерия/Референс%20—%20felix-tui.md) — локальная копия в
-`~/Projects/felix-tui`, источник на `riga`.
+| Key | Action |
+|---|---|
+| `Ctrl-S` / `Ctrl-Shift-S` | save / save as |
+| `Ctrl-Q` | quit (asks when the buffer is dirty) |
+| `Ctrl-Z` / `Ctrl-Y` | undo / redo |
+| `Ctrl-F` / `Ctrl-H` | search / replace |
+| `Ctrl-P` | fuzzy open |
+| `Ctrl-O` | new tab |
+| `Ctrl-E` | command palette |
+| `Ctrl-A`, `Ctrl-C`, `Ctrl-X`, `Ctrl-V` | select all, copy, cut, paste |
+| `F8` / `Shift-F8` | next / previous diagnostic |
+| `Alt-.` | quickfix |
+| `Alt-t` | toggle a Markdown checkbox |
+| `Alt-a` | ask `opencode` about the selection |
+
+The full key inventory and UX notes are in [`docs/00 MOC.md`](docs/00%20MOC.md).
+
+## Configuration
+
+`pero` creates a commented config on first run:
+
+```
+$XDG_CONFIG_HOME/pero/config.toml
+~/.config/pero/config.toml
+```
+
+Session state (tabs, positions, recent files) lives separately:
+
+```
+$XDG_STATE_HOME/pero/state.toml
+~/.local/state/pero/state.toml
+```
+
+The important sections:
+
+```toml
+theme = "everforest"
+language = "en" # en | ru
+
+[editor]
+tabsize = 4
+tabstospaces = true
+softwrap = "auto" # auto | on | off
+ghost = true
+autopairs = true
+restore_session = true
+
+[lsp]
+servers = { go = "gopls", markdown = "ltex-ls", python = "pyright-langserver --stdio" }
+```
+
+Any LSP server that speaks stdio can be added by filetype, extension or glob.
+Servers are started lazily when a matching file is opened; `gopls`, `pyright`,
+`clangd`, `ltex-ls` and `harper-ls` are the usual choices. Changing the theme in
+the UI (`Ctrl-E` → `Theme…`) is written back to `config.toml`.
+
+## Status
+
+Milestones M1–M9 are implemented: editing, selection, undo, tabs, search, fuzzy
+open, session, highlighting, config, 33 themes, mouse, overlays, LSP,
+completion, ghost text and AI. M10 (Ctrl+click links and definitions) is planned.
+The live checks that still need a real terminal are listed in [`TODO.md`](TODO.md).
+The editor is developed on Linux; macOS and Windows terminals are untested.
+
+## Development
+
+```sh
+go test ./...
+go vet ./...
+```
+
+The design notes, architecture and UI contracts are in the
+[`docs/`](docs/00%20MOC.md) vault.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
