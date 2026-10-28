@@ -1,0 +1,72 @@
+# Настройки pero.
+#
+# Файл читается из:
+#   $XDG_CONFIG_HOME/pero/config.toml
+#   ~/.config/pero/config.toml
+#
+# Состояние сессии (вкладки, позиции, недавние файлы) хранится отдельно:
+#   $XDG_STATE_HOME/pero/state.toml
+#   ~/.local/state/pero/state.toml
+#
+# Если файла нет, он создаётся при первом запуске. Ошибка в конфиге не роняет
+# редактор: показывается предупреждение, работа продолжается на дефолтах.
+#
+# Неизвестные ключи не ломают загрузку — о них будет предупреждение.
+
+# Тема: plain, everforest, vesper, nord, catppuccin-*, gruvbox-*, tokyonight-*,
+# dracula, solarized-*, one-*, monokai, ayu-*, kanagawa-*, rose-pine-*,
+# github-*, zenburn, flexoki-dark.
+theme = "everforest"
+
+# Язык интерфейса: en | ru. Пустое или неизвестное значение → en.
+language = "en"
+
+[editor]
+# Ширина таба, 1..16.
+tabsize = 4
+# Таб вставляет пробелы.
+tabstospaces = true
+# auto | on | off.
+# auto: проза (.md, .txt, .rst, .org) переносится, код и конфиги — нет.
+softwrap = "auto"
+# Подсказки слов из буфера.
+ghost = true
+# Пауза перед подсказкой, мс (не меньше 50).
+ghost_delay_ms = 250
+# Сколько строк оставлять над и под курсором (не меньше 0).
+scrollmargin = 3
+# Восстанавливать вкладки и позиции при запуске.
+restore_session = true
+# Автоматически закрывать скобки и кавычки.
+autopairs = true
+# Убирать пробелы в конце строк при сохранении. Выключено: ломает markdown-переносы.
+trim_trailing_whitespace = false
+# Добавлять перевод строки в конец файла при сохранении.
+final_newline = true
+
+[markdown]
+# Alt-t: переключить чекбокс.
+checkbox = true
+# Enter продолжает список.
+continue_list = true
+# auto | ltex | harper | off.
+# auto: заметная доля кириллицы → ltex, иначе harper.
+spell = "auto"
+
+[lsp]
+# Команда сервера: ключ — filetype ("go"), расширение (".go") или glob ("*.go").
+servers = { go = "gopls", markdown = "ltex-ls", python = "pyright-langserver --stdio" }
+
+[ignore]
+# Каталоги, которые не обходит поиск файлов.
+dirs = [".git", ".jj", "node_modules", "target", ".direnv", "result*", "dist", "build", ".cache"]
+
+[keys]
+"Alt-t" = "markdown.checkbox"
+"Alt-." = "lsp.codeaction"
+# Пример: вернуть новую вкладку на Alt-O (по умолчанию Ctrl-O).
+# "Alt-O" = "tab.new"
+
+# Переопределение режима файла: prose | code.
+# [files]
+# "*.md" = "code"
