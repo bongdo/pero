@@ -37,7 +37,7 @@ highlighting, diagnostics and inline completion.
 Requires Go 1.26+ and a truecolor terminal.
 
 ```sh
-go install github.com/bongdo/pero@latest
+go install github.com/bongdo/pero@v0.1.1
 pero
 ```
 
