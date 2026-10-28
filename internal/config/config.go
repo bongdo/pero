@@ -15,7 +15,7 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-// DefaultTOML — дефолтный конфиг с комментариями; им же заполняется
+// DefaultTOML - дефолтный конфиг с комментариями; им же заполняется
 // отсутствующий config.toml при первом запуске.
 //
 //go:embed default.toml
@@ -29,7 +29,7 @@ const (
 	spellCyrillicMin = 0.15
 )
 
-// Config — пользовательский конфиг.
+// Config - пользовательский конфиг.
 type Config struct {
 	Theme    string            `toml:"theme"`
 	Language string            `toml:"language"` // ru | en, пусто/неизвестно → en
@@ -41,7 +41,7 @@ type Config struct {
 	Files    map[string]string `toml:"files"`
 }
 
-// Editor — поведение набора и прокрутки.
+// Editor - поведение набора и прокрутки.
 type Editor struct {
 	Tabsize                int    `toml:"tabsize"`
 	Tabstospaces           bool   `toml:"tabstospaces"`
@@ -55,19 +55,19 @@ type Editor struct {
 	FinalNewline           bool   `toml:"final_newline"`
 }
 
-// Markdown — поведение для прозы и markdown.
+// Markdown - поведение для прозы и markdown.
 type Markdown struct {
 	Checkbox     bool   `toml:"checkbox"`
 	ContinueList bool   `toml:"continue_list"`
 	Spell        string `toml:"spell"` // auto | ltex | harper | off
 }
 
-// LSP — команды серверов: filetype/расширение/glob → командная строка.
+// LSP - команды серверов: filetype/расширение/glob → командная строка.
 type LSP struct {
 	Servers map[string]string `toml:"servers"`
 }
 
-// Ignore — каталоги, которые обходит поиск файлов.
+// Ignore - каталоги, которые обходит поиск файлов.
 type Ignore struct {
 	Dirs []string `toml:"dirs"`
 }
@@ -143,7 +143,7 @@ func choice(v, fallback string, allowed ...string) string {
 	return fallback
 }
 
-// ConfigPath — $XDG_CONFIG_HOME/pero/config.toml или ~/.config/pero/config.toml.
+// ConfigPath - $XDG_CONFIG_HOME/pero/config.toml или ~/.config/pero/config.toml.
 func ConfigPath() (string, error) {
 	dir, err := os.UserConfigDir()
 	if err != nil {
@@ -152,7 +152,7 @@ func ConfigPath() (string, error) {
 	return filepath.Join(dir, "pero", "config.toml"), nil
 }
 
-// StatePath — $XDG_STATE_HOME/pero/state.toml или
+// StatePath - $XDG_STATE_HOME/pero/state.toml или
 // ~/.local/state/pero/state.toml.
 func StatePath() (string, error) {
 	if dir := os.Getenv("XDG_STATE_HOME"); dir != "" {
@@ -233,7 +233,7 @@ func load() (Config, []string, error) {
 	return cfg, warns, nil
 }
 
-// SoftwrapFor — включён ли перенос для файла. on/off сильнее авторежима.
+// SoftwrapFor - включён ли перенос для файла. on/off сильнее авторежима.
 func (c Config) SoftwrapFor(path string) bool {
 	switch strings.ToLower(strings.TrimSpace(c.Editor.Softwrap)) {
 	case "on":
@@ -244,7 +244,7 @@ func (c Config) SoftwrapFor(path string) bool {
 	return c.fileMode(path) == "prose"
 }
 
-// SpellFor — какой сервер проверки орфографии поднимать. Для кода — off.
+// SpellFor - какой сервер проверки орфографии поднимать. Для кода - off.
 func (c Config) SpellFor(path, sample string) string {
 	if c.fileMode(path) != "prose" {
 		return "off"
@@ -263,7 +263,7 @@ func (c Config) SpellFor(path, sample string) string {
 	return "harper"
 }
 
-// ServerFor — команда LSP для файла или пустая строка.
+// ServerFor - команда LSP для файла или пустая строка.
 func (c Config) ServerFor(path string) string {
 	if v, ok := lookupByPath(c.LSP.Servers, path); ok {
 		return strings.TrimSpace(v)
@@ -271,7 +271,7 @@ func (c Config) ServerFor(path string) string {
 	return ""
 }
 
-// fileMode — режим файла: prose или code, с учётом [files].
+// fileMode - режим файла: prose или code, с учётом [files].
 func (c Config) fileMode(path string) string {
 	if v, ok := lookupByPath(c.Files, path); ok {
 		switch strings.ToLower(strings.TrimSpace(v)) {
@@ -291,7 +291,7 @@ var proseExt = map[string]bool{
 	".md": true, ".markdown": true, ".txt": true, ".rst": true, ".org": true,
 }
 
-// filetypeExts — filetype-ключи из [lsp.servers] и их расширения. Точное имя
+// filetypeExts - filetype-ключи из [lsp.servers] и их расширения. Точное имя
 // файла и явное расширение (.py) всё равно точнее filetype.
 var filetypeExts = map[string][]string{
 	"markdown":   {".md", ".markdown", ".mdown", ".mkd", ".mdx"},
@@ -375,7 +375,7 @@ func matchScore(pattern, path string) int {
 	return 0
 }
 
-// cyrillicShare — доля кириллических букв среди букв (0..1).
+// cyrillicShare - доля кириллических букв среди букв (0..1).
 func cyrillicShare(s string) float64 {
 	letters, cyr := 0, 0
 	for _, r := range s {

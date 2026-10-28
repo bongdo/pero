@@ -55,12 +55,12 @@ func TestFindNextPrevCircular(t *testing.T) {
 			t.Fatalf("next %d: %v %v", i, got, ok)
 		}
 	}
-	// После последнего — по кругу первый.
+	// После последнего - по кругу первый.
 	got, ok := e.FindNext("аа", all[2].End, false)
 	if !ok || got != all[0] {
 		t.Fatalf("wrap next: %v %v", got, ok)
 	}
-	// Назад от первого — последний.
+	// Назад от первого - последний.
 	got, ok = e.FindPrev("аа", all[0].Start, false)
 	if !ok || got != all[2] {
 		t.Fatalf("wrap prev: %v %v", got, ok)

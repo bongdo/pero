@@ -11,7 +11,7 @@ import (
 )
 
 // Save атомарно пишет весь config.toml. Комментарии и ручное форматирование
-// при этом теряются — для точечной смены темы есть SaveTheme.
+// при этом теряются - для точечной смены темы есть SaveTheme.
 func Save(c Config) error {
 	path, err := ConfigPath()
 	if err != nil {

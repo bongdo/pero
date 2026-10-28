@@ -143,7 +143,7 @@ func TestToggleCheckboxAt(t *testing.T) {
 		}
 	}
 
-	// Незакрытый fence: всё после ограждения — код.
+	// Незакрытый fence: всё после ограждения - код.
 	if _, ok := ToggleCheckboxAt(runes("```", "- [ ] код"), 1); ok {
 		t.Error("ToggleCheckboxAt залез в незакрытый fence")
 	}

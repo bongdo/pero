@@ -8,14 +8,14 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-// TabState — открытая вкладка и позиция курсора.
+// TabState - открытая вкладка и позиция курсора.
 type TabState struct {
 	Path       string `toml:"path"`
 	CursorLine int    `toml:"cursor_line"`
 	CursorCol  int    `toml:"cursor_col"`
 }
 
-// State — состояние между запусками.
+// State - состояние между запусками.
 type State struct {
 	Tabs           []TabState `toml:"tabs"`
 	Recent         []string   `toml:"recent"`
@@ -23,7 +23,7 @@ type State struct {
 	LastFile       string     `toml:"last_file"`
 }
 
-// LoadState читает state.toml. Отсутствующий или битый файл — не ошибка.
+// LoadState читает state.toml. Отсутствующий или битый файл - не ошибка.
 func LoadState() (State, bool) {
 	path, err := StatePath()
 	if err != nil {

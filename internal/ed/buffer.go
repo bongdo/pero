@@ -10,29 +10,29 @@ import (
 	"unicode"
 )
 
-// ErrNoPath — буфер не привязан к файлу.
+// ErrNoPath - буфер не привязан к файлу.
 var ErrNoPath = errors.New("у буфера нет пути")
 
-// ErrReadOnly — буфер нельзя записывать.
+// ErrReadOnly - буфер нельзя записывать.
 var ErrReadOnly = errors.New("буфер только для чтения")
 
-// MaxFileSize — предел чтения файла: всё, что больше, открывается read-only.
+// MaxFileSize - предел чтения файла: всё, что больше, открывается read-only.
 const MaxFileSize = 10 << 20
 
-// binarySample — сколько байт с начала файла проверяем на NUL.
+// binarySample - сколько байт с начала файла проверяем на NUL.
 const binarySample = 8 << 10
 
-// Pos — логическая позиция: строка и индекс руны (не байт).
+// Pos - логическая позиция: строка и индекс руны (не байт).
 type Pos struct {
 	Line, Col int
 }
 
-// Range — полуинтервал [Start, End).
+// Range - полуинтервал [Start, End).
 type Range struct {
 	Start, End Pos
 }
 
-// Buffer — текст одного файла.
+// Buffer - текст одного файла.
 type Buffer struct {
 	Lines    [][]rune
 	Path     string
@@ -43,7 +43,7 @@ type Buffer struct {
 
 	dirty bool
 
-	// revision — идентификатор текущего содержимого для dirty после undo/redo:
+	// revision - идентификатор текущего содержимого для dirty после undo/redo:
 	// undo возвращает ровно то состояние, что было до правки. saveGen меняется
 	// при сохранении/перезагрузке и не даёт группировать правки через save.
 	revision      uint64
@@ -112,7 +112,7 @@ func sample(data []byte) []byte {
 	return data
 }
 
-// Text — содержимое с LF, без BOM (для поиска и тестов).
+// Text - содержимое с LF, без BOM (для поиска и тестов).
 func (b *Buffer) Text() string {
 	var sb strings.Builder
 	for i, line := range b.Lines {
@@ -124,7 +124,7 @@ func (b *Buffer) Text() string {
 	return sb.String()
 }
 
-// FileBytes — ровно то, что уйдёт на диск: BOM + исходный EOL.
+// FileBytes - ровно то, что уйдёт на диск: BOM + исходный EOL.
 func (b *Buffer) FileBytes() []byte {
 	var sb strings.Builder
 	if b.BOM {
@@ -220,7 +220,7 @@ func (b *Buffer) Reload() error {
 	b.BOM = nb.BOM
 	b.ReadOnly = nb.ReadOnly
 	b.Version = nb.Version
-	// Новое содержимое — новое состояние: старые undo-записи к нему не относятся.
+	// Новое содержимое - новое состояние: старые undo-записи к нему не относятся.
 	b.revision = b.nextRevision
 	b.nextRevision++
 	b.savedRevision = b.revision
@@ -229,10 +229,10 @@ func (b *Buffer) Reload() error {
 	return nil
 }
 
-// Dirty — были ли правки после открытия/сохранения.
+// Dirty - были ли правки после открытия/сохранения.
 func (b *Buffer) Dirty() bool { return b.dirty }
 
-// LastLine — индекс последней строки.
+// LastLine - индекс последней строки.
 func (b *Buffer) LastLine() int { return len(b.Lines) - 1 }
 
 // Clamp приводит позицию к допустимой.
@@ -265,12 +265,12 @@ func (b *Buffer) Line(n int) []rune {
 	return b.Lines[n]
 }
 
-// RuneCount — количество рун в строке, на которую указывает p.
+// RuneCount - количество рун в строке, на которую указывает p.
 func (b *Buffer) RuneCount(p Pos) int {
 	return len(b.Lines[b.clamp(p).Line])
 }
 
-// RuneOffset — абсолютное смещение в рунах от начала буфера (LF = одна руна).
+// RuneOffset - абсолютное смещение в рунах от начала буфера (LF = одна руна).
 func (b *Buffer) RuneOffset(p Pos) int {
 	p = b.clamp(p)
 	off := p.Col
@@ -280,7 +280,7 @@ func (b *Buffer) RuneOffset(p Pos) int {
 	return off
 }
 
-// PosFromRuneOffset — обратное к RuneOffset.
+// PosFromRuneOffset - обратное к RuneOffset.
 func (b *Buffer) PosFromRuneOffset(off int) Pos {
 	if off <= 0 {
 		return Pos{}
@@ -295,7 +295,7 @@ func (b *Buffer) PosFromRuneOffset(off int) Pos {
 	return Pos{last, len(b.Lines[last])}
 }
 
-// UTF16Offset — позиция в UTF-16 кодельных единицах от начала строки (LSP Character).
+// UTF16Offset - позиция в UTF-16 кодельных единицах от начала строки (LSP Character).
 func (b *Buffer) UTF16Offset(p Pos) int {
 	p = b.clamp(p)
 	n := 0
@@ -305,7 +305,7 @@ func (b *Buffer) UTF16Offset(p Pos) int {
 	return n
 }
 
-// PosFromUTF16 — позиция по номеру строки и UTF-16 колонке.
+// PosFromUTF16 - позиция по номеру строки и UTF-16 колонке.
 // Внутри суррогатной пары позиция не создаётся: возвращается начало руны.
 func (b *Buffer) PosFromUTF16(line, char int) Pos {
 	if line < 0 {
@@ -372,7 +372,7 @@ func (b *Buffer) DeleteForward(p Pos) Pos {
 	return p
 }
 
-// replace — единственный примитив правки: держит Version и dirty в синхроне.
+// replace - единственный примитив правки: держит Version и dirty в синхроне.
 // Не экспортируется: правки идут через Editor.
 func (b *Buffer) replace(r Range, text string) Pos {
 	r = b.orderedRange(r)
@@ -435,7 +435,7 @@ func (b *Buffer) orderedRange(r Range) Range {
 	return r
 }
 
-// posAfter — позиция сразу после текста, вставленного в start.
+// posAfter - позиция сразу после текста, вставленного в start.
 func (b *Buffer) posAfter(start Pos, text string) Pos {
 	chunks := strings.Split(text, "\n")
 	if len(chunks) == 1 {
@@ -487,7 +487,7 @@ func posLess(a, b Pos) bool {
 	return a.Col < b.Col
 }
 
-// Indent — ведущие пробелы/табы строки (для автоотступа).
+// Indent - ведущие пробелы/табы строки (для автоотступа).
 func (b *Buffer) Indent(p Pos) string {
 	line := b.Lines[b.clamp(p).Line]
 	n := 0
@@ -497,7 +497,7 @@ func (b *Buffer) Indent(p Pos) string {
 	return string(line[:n])
 }
 
-// Next — следующая логическая позиция (по рунам).
+// Next - следующая логическая позиция (по рунам).
 func (b *Buffer) Next(p Pos) Pos {
 	p = b.clamp(p)
 	if p.Col < len(b.Lines[p.Line]) {
@@ -509,7 +509,7 @@ func (b *Buffer) Next(p Pos) Pos {
 	return p
 }
 
-// Prev — предыдущая логическая позиция (по рунам).
+// Prev - предыдущая логическая позиция (по рунам).
 func (b *Buffer) Prev(p Pos) Pos {
 	p = b.clamp(p)
 	if p.Col > 0 {
@@ -521,7 +521,7 @@ func (b *Buffer) Prev(p Pos) Pos {
 	return p
 }
 
-// nextPos — следующая позиция по графемным кластерам.
+// nextPos - следующая позиция по графемным кластерам.
 func (b *Buffer) nextPos(p Pos) (Pos, bool) {
 	p = b.clamp(p)
 	if p.Col < len(b.Lines[p.Line]) {
@@ -533,7 +533,7 @@ func (b *Buffer) nextPos(p Pos) (Pos, bool) {
 	return p, false
 }
 
-// prevPos — предыдущая позиция по графемным кластерам.
+// prevPos - предыдущая позиция по графемным кластерам.
 func (b *Buffer) prevPos(p Pos) (Pos, bool) {
 	p = b.clamp(p)
 	if p.Col > 0 {
@@ -545,16 +545,16 @@ func (b *Buffer) prevPos(p Pos) (Pos, bool) {
 	return p, false
 }
 
-// LineStart — начало строки.
+// LineStart - начало строки.
 func (b *Buffer) LineStart(p Pos) Pos { return Pos{b.clamp(p).Line, 0} }
 
-// LineEnd — конец строки.
+// LineEnd - конец строки.
 func (b *Buffer) LineEnd(p Pos) Pos {
 	p = b.clamp(p)
 	return Pos{p.Line, len(b.Lines[p.Line])}
 }
 
-// WordRight — вправо через пробелы/пунктуацию и слово.
+// WordRight - вправо через пробелы/пунктуацию и слово.
 func (b *Buffer) WordRight(p Pos) Pos {
 	p = b.clamp(p)
 	for {
@@ -579,7 +579,7 @@ func (b *Buffer) WordRight(p Pos) Pos {
 	}
 }
 
-// WordLeft — влево через пробелы/пунктуацию и слово.
+// WordLeft - влево через пробелы/пунктуацию и слово.
 func (b *Buffer) WordLeft(p Pos) Pos {
 	p = b.clamp(p)
 	for {

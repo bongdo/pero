@@ -1,6 +1,6 @@
-# pero v1 — контракты пакетов и владение файлами
+# pero v1 - контракты пакетов и владение файлами
 
-Это рабочий контракт для параллельной реализации. UX-документы — источник истины.
+Это рабочий контракт для параллельной реализации. UX-документы - источник истины.
 Пакеты ниже не импортируют друг друга не по слоям и не меняют чужие файлы.
 
 ## Общие правила
@@ -8,16 +8,16 @@
 - Go 1.26, `gofmt`, тесты рядом с кодом.
 - Зависимости уже в `go.mod`: bubbletea v2, bubbles v2, lipgloss v2, chroma v2,
   BurntSushi/toml, atotto/clipboard, uniseg. **Не менять `go.mod`/`go.sum`.**
-- Позиции в редакторе — логические: строка + индекс руны (`ed.Pos`). В LSP — UTF-16
+- Позиции в редакторе - логические: строка + индекс руны (`ed.Pos`). В LSP - UTF-16
   (`Character`), конвертация только на границе пакета `lsp`.
 - Всё, что меняет текст, идёт через `ed.Editor` (транзакции). UI не пишет в `Buffer.Lines`.
 - Никаких горутин, меняющих UI-модель: только `tea.Msg`/`tea.Cmd`.
 - Внешние процессы (LSP, opencode) не блокируют UI.
-- Ошибки — внятные, на русском в UI-слое; пакеты возвращают `error`.
+- Ошибки - внятные, на русском в UI-слое; пакеты возвращают `error`.
 
-## Волна 1 — независимые пакеты
+## Волна 1 - независимые пакеты
 
-### A. `internal/ed` — ядро редактора (владелец: агент A)
+### A. `internal/ed` - ядро редактора (владелец: агент A)
 
 Файлы: `buffer.go`, `editor.go`, `undo.go`, `selection.go`, `search.go`,
 `markdown.go`, `*_test.go`.
@@ -55,7 +55,7 @@ func (b *Buffer) UTF16Offset(p Pos) int
 func (b *Buffer) PosFromUTF16(line, char int) Pos
 ```
 
-`Editor` — курсор, выделение, undo, правки:
+`Editor` - курсор, выделение, undo, правки:
 
 ```go
 type Selection struct{ Anchor, Cursor Pos; Active bool } // полуинтервал [min,max)
@@ -121,7 +121,7 @@ Markdown: `ToggleCheckbox` циклит `- [ ]` ↔ `- [x]`, понимает о
 Тесты: unicode (кириллица/эмодзи), undo/redo с группировкой, replace-all одной
 транзакцией, сохранение EOL/BOM, read-only, markdown-цикл, поиск по кругу.
 
-### B. `internal/config` — TOML + state + темы (владелец: агент B)
+### B. `internal/config` - TOML + state + темы (владелец: агент B)
 
 Файлы: `config.go`, `theme.go`, `state.go`, `default.toml`, `*_test.go`.
 
@@ -167,14 +167,14 @@ func ThemeByName(name string) Theme
 func ThemeNames() []string
 ```
 
-Все цвета — ANSI/hex-строки, пригодные для lipgloss. `Load` не падает на неизвестной
+Все цвета - ANSI/hex-строки, пригодные для lipgloss. `Load` не падает на неизвестной
 теме (plain + warning). `SaveState` атомарный (`tmp` + rename), права 0644,
 каталоги 0755. `state.toml` читается даже при битом `config.toml`.
 
 Тесты: дефолт создаётся, битый TOML, неизвестный ключ (предупреждение, не паника),
 softwrap auto для .md/.go, EOL/state round-trip, темы.
 
-### C. `internal/workspace` — проект, файлы, fuzzy, сессия (владелец: агент C)
+### C. `internal/workspace` - проект, файлы, fuzzy, сессия (владелец: агент C)
 
 Файлы: `project.go`, `fuzzy.go`, `names.go`, `session.go`, `*_test.go`.
 
@@ -199,12 +199,12 @@ func SaveRecent(path string, recent []string) error
 
 `Walk` не идёт по симлинкам-циклам, не читает содержимое файлов, не падает на правах.
 `Filter` по умолчанию возвращает до `limit` (0 = 200), сначала совпадения по имени,
-потом по пути. Кириллица/ё — по рунам. `List` ограничен 100k файлов/2 сек.
+потом по пути. Кириллица/ё - по рунам. `List` ограничен 100k файлов/2 сек.
 
 Тесты: ignore-каталоги, symlink-цикл, fuzzy на кириллице, disambiguate, бинарник,
 `Walk` закрывает канал и отменяется по ctx.
 
-### D. `internal/lsp` — JSON-RPC и LSP (владелец: агент D)
+### D. `internal/lsp` - JSON-RPC и LSP (владелец: агент D)
 
 Файлы: `types.go`, `jsonrpc.go`, `client.go`, `manager.go`, `*_test.go`.
 
@@ -254,21 +254,21 @@ func (m *Manager) Close()
 - Запросы по id, ожидание ответа с контекстом; уведомления не блокируют.
 - Диагностики кэшируются по URI + версии, не теряются при `publishDiagnostics`.
 - `initialize`/`initialized`, `textDocument/didOpen|didChange|didSave|didClose`,
-  full-sync (`TextDocumentSyncKind=Full`) — проще и надёжнее.
+  full-sync (`TextDocumentSyncKind=Full`) - проще и надёжнее.
 - `workspace/applyEdit` от сервера → handler, не блокирует reader.
 - Падение сервера → `Close` и ошибка, редактор живёт.
 - `ServerConfig` из строки команды: `strings.Fields`, поддержка флагов. `Manager`
   подбирает по расширению/языку; `gopls`, `pyright-langserver --stdio`,
   `typescript-language-server --stdio`, `clangd`, `lua-language-server`,
   `nixd`, `nimony-lsp`, `ltex-ls`, `harper-ls`.
-- `uri` — `file://` с корректным percent-encoding (кириллица/пробелы).
+- `uri` - `file://` с корректным percent-encoding (кириллица/пробелы).
 - Hover: Markdown/plaintext contents в строку. Completion: `insertText`/`textEdit`.
-- Таймауты: Start/Initialize 10 с; запросы — контекст вызывающего.
+- Таймауты: Start/Initialize 10 с; запросы - контекст вызывающего.
 
 Тесты: фейковый сервер на `io.Pipe` (Content-Length кадры), id-мультиплекс,
 диагностики, completion/hover/codeaction, битый JSON, EOF, URI с кириллицей.
 
-### E. `internal/assist` — t9, ghost, AI (владелец: агент E)
+### E. `internal/assist` - t9, ghost, AI (владелец: агент E)
 
 Файлы: `t9.go`, `ghost.go`, `ai.go`, `*_test.go`.
 
@@ -289,11 +289,11 @@ func RunOpencode(ctx context.Context, prompt string) (string, error) // opencode
   не равен уже набранному, ≥ 2 символов. Источник один.
 - AI: `opencode` запускается через `exec.CommandContext`, промпт на stdin (флаг
   `run`), stderr отдельно, таймаут 30 с, результат обрезается до 8 КБ.
-  Если `opencode` нет — понятная ошибка. **Ничего не пишет в буфер сам.**
+  Если `opencode` нет - понятная ошибка. **Ничего не пишет в буфер сам.**
 
 Тесты: t9-частота/кириллица, ghost-фильтры, AI с фейковым `opencode` в PATH.
 
-### F. `internal/highlight` — chroma (владелец: агент F)
+### F. `internal/highlight` - chroma (владелец: агент F)
 
 Файлы: `highlight.go`, `*_test.go`.
 
@@ -308,15 +308,15 @@ func (h *Highlighter) Lines(text string) [][]Span // по логическим �
 
 - Поддержка минимум: markdown, go, lua, nix, json, toml, yaml, sh, python, js, ts,
   rust, c, nim. Неизвестный файл → пустые спаны.
-- `SGR` — готовые ANSI-последовательности (например `\x1b[38;2;...m`), чтобы UI не
-  зависел от chroma. Сброс — `\x1b[0m`; UI сам добавляет reset после спана.
-- Кэш: один входной текст/версия; повторный вызов без изменений — те же спаны.
+- `SGR` - готовые ANSI-последовательности (например `\x1b[38;2;...m`), чтобы UI не
+  зависел от chroma. Сброс - `\x1b[0m`; UI сам добавляет reset после спана.
+- Кэш: один входной текст/версия; повторный вызов без изменений - те же спаны.
 - Не паниковать на битом UTF-8/пустом файле.
 
 Тесты: go/md/json дают непустые спаны, неизвестный файл пуст, повторный вызов из кэша,
 эмодзи/кириллица не сдвигают индексы.
 
-### G. `internal/widgets` — UI-примитивы (владелец: агент G)
+### G. `internal/widgets` - UI-примитивы (владелец: агент G)
 
 Файлы: `rect.go`, `box.go`, `overlay.go`, `input.go`, `list.go`, `toast.go`, `*_test.go`.
 
@@ -346,16 +346,16 @@ type Toast struct{ Text string; Kind string; Until time.Time }
 func RenderToast(t Toast, width int, style Style) string
 ```
 
-- Ширина/обрезка — через `github.com/charmbracelet/x/ansi` (уже в зависимостях,
+- Ширина/обрезка - через `github.com/charmbracelet/x/ansi` (уже в зависимостях,
   `ansi.StringWidth`, `ansi.Truncate`, `ansi.Cut`), не по `len`.
-- `Overlay` не выходит за границы base; если не помещается — прижимает.
+- `Overlay` не выходит за границы base; если не помещается - прижимает.
 - Frame: внутренняя ширина = max(24, ширина содержимого), не шире `width-4`.
 - Input не принимает `\n` (схлопывает в пробел), `Tab` не вставляет.
 - List не рисует больше `Height`, выбранный всегда виден.
 
 Тесты: эмодзи/кириллица, overlay у краёв, ввод/backspace, список 1000 строк, toast.
 
-### H. `internal/markdown` — чистые markdown-функции (владелец: агент H)
+### H. `internal/markdown` - чистые markdown-функции (владелец: агент H)
 
 Файлы: `markdown.go`, `*_test.go`.
 
@@ -375,11 +375,11 @@ func CyrillicShare(sample string) float64
 - Внутри code fence не трогает.
 - `ContinueList` на пустом пункте (`- `) → `clear=true`, вставка пустая.
 - `CollapseSpaces` сохраняет отступ, табы не конвертирует.
-- `CyrillicShare` — доля кириллических букв среди букв (0..1), для ltex/harper.
+- `CyrillicShare` - доля кириллических букв среди букв (0..1), для ltex/harper.
 
 Тесты: все циклы чекбокса, вложенность, code fence, нумерованные списки, ё.
 
-## Волна 2 — UI и интеграция (после волны 1)
+## Волна 2 - UI и интеграция (после волны 1)
 
 Владелец UI-ядра получает все пакеты; файлы UI делятся по зонам:
 `model.go/update.go/commands.go`, `layout.go/render.go/softwrap.go`,
@@ -388,7 +388,7 @@ func CyrillicShare(sample string) float64
 Общий контракт `Model` пишется до запуска агентов волны 2 и не меняется без
 согласования.
 
-## Волна 3 — QA
+## Волна 3 - QA
 
 `go build ./...`, `go test ./...`, `go vet ./...`, прогон сценариев из критериев
 готовности UX-документов (40×10, 80×24, 160×50), исправление интеграции.

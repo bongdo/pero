@@ -6,7 +6,7 @@ import (
 	"github.com/charmbracelet/x/ansi"
 )
 
-// Overlay вставляет box в base начиная с (x, y). width — ширина экрана;
+// Overlay вставляет box в base начиная с (x, y). width - ширина экрана;
 // строки base дополняются до неё. Если box не помещается справа или снизу,
 // позиция прижимается внутрь. Строки вне base отбрасываются, чужие ANSI не
 // разрезаются. Если width <= 0, ширина берётся из base.
@@ -66,7 +66,7 @@ func Overlay(base []string, box []string, x, y, width int) []string {
 		if w := ansi.StringWidth(left); w < x {
 			left += strings.Repeat(" ", x-w)
 		}
-		// Отрезанная часть могла оставить открытый SGR — закрываем, чтобы
+		// Отрезанная часть могла оставить открытый SGR - закрываем, чтобы
 		// цвет подложки не перекрасил попап.
 		if strings.Contains(left, "\x1b") {
 			left += sgrReset
@@ -75,7 +75,7 @@ func Overlay(base []string, box []string, x, y, width int) []string {
 		cell := padRight(ansi.Truncate(boxLine, boxW, ""), boxW)
 		right := ""
 		if n := width - x - boxW; n > 0 {
-			// Cut может вернуть широкий кластер, начавшийся до границы, —
+			// Cut может вернуть широкий кластер, начавшийся до границы, -
 			// подрезаем, чтобы строка не стала шире экрана.
 			right = ansi.Truncate(ansi.Cut(line, x+boxW, width), n, "")
 		}

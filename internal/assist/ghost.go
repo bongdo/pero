@@ -8,7 +8,7 @@ const (
 	SourceLSP = "lsp"
 )
 
-// Suggestion — ghost-кандидат. Text — кандидат целиком; UI отрезает уже
+// Suggestion - ghost-кандидат. Text - кандидат целиком; UI отрезает уже
 // набранный префикс, чтобы нарисовать серый суффикс, и вставляет только его.
 type Suggestion struct {
 	Text    string
@@ -21,8 +21,8 @@ func GhostCandidate(prefix string, candidates []string, minLen int) (Suggestion,
 	return GhostCandidateFrom(SourceT9, prefix, candidates, minLen)
 }
 
-// GhostCandidateFrom — то же с явным источником: SourceT9 или SourceLSP.
-// minLen — минимальная длина кандидата в рунах, но не меньше 2.
+// GhostCandidateFrom - то же с явным источником: SourceT9 или SourceLSP.
+// minLen - минимальная длина кандидата в рунах, но не меньше 2.
 func GhostCandidateFrom(source, prefix string, candidates []string, minLen int) (Suggestion, bool) {
 	if source != SourceT9 && source != SourceLSP {
 		return Suggestion{}, false

@@ -4,7 +4,7 @@ status: active
 updated: 2026-10-26
 ---
 
-# Референс — felix-tui
+# Референс - felix-tui
 
 ## Где лежит
 
@@ -16,7 +16,7 @@ updated: 2026-10-26
 | Стек | bubbletea v2.1.0, bubbles v2.2.1, lipgloss v2.0.6 |
 | Объём | ~8.4k строк Go, 304 КБ без бинарника |
 
-Копия — **снимок для чтения**, не для правок. Правки — на riga, потом обновляем копию:
+Копия - **снимок для чтения**, не для правок. Правки - на riga, потом обновляем копию:
 `rsync -a --exclude .git --exclude .jj --exclude felix-tui -e ssh riga:/home/bongdo/Projects/felix-tui/ ~/Projects/felix-tui/`.
 
 Лицензии в репозитории нет; проект твой, поэтому код переносить можно, но чужие куски
@@ -27,7 +27,7 @@ updated: 2026-10-26
 | Файл | Зачем |
 |---|---|
 | `internal/ui/layout.go` | геометрия, `rect`, брейкпоинты |
-| `internal/ui/dialog.go:551` | `renderOverlays` / `overlayAt` — композитор попапов |
+| `internal/ui/dialog.go:551` | `renderOverlays` / `overlayAt` - композитор попапов |
 | `internal/ui/keys.go:28` | порядок обработки клавиш и фокусов |
 | `internal/ui/mouse.go` | центральный роутер мыши |
 | `internal/ui/render.go` | рендер экрана в `[]string` |
@@ -52,5 +52,5 @@ updated: 2026-10-26
 
 ## Связи
 
-- [[Архитектура]] — как это ложится в pero.
+- [[Архитектура]] - как это ложится в pero.
 - [[Стек и запуск]].

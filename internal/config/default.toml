@@ -11,7 +11,7 @@
 # Если файла нет, он создаётся при первом запуске. Ошибка в конфиге не роняет
 # редактор: показывается предупреждение, работа продолжается на дефолтах.
 #
-# Неизвестные ключи не ломают загрузку — о них будет предупреждение.
+# Неизвестные ключи не ломают загрузку - о них будет предупреждение.
 
 # Тема: plain, everforest, vesper, nord, catppuccin-*, gruvbox-*, tokyonight-*,
 # dracula, solarized-*, one-*, monokai, ayu-*, kanagawa-*, rose-pine-*,
@@ -27,7 +27,7 @@ tabsize = 4
 # Таб вставляет пробелы.
 tabstospaces = true
 # auto | on | off.
-# auto: проза (.md, .txt, .rst, .org) переносится, код и конфиги — нет.
+# auto: проза (.md, .txt, .rst, .org) переносится, код и конфиги - нет.
 softwrap = "auto"
 # Подсказки слов из буфера.
 ghost = true
@@ -54,7 +54,7 @@ continue_list = true
 spell = "auto"
 
 [lsp]
-# Команда сервера: ключ — filetype ("go"), расширение (".go") или glob ("*.go").
+# Команда сервера: ключ - filetype ("go"), расширение (".go") или glob ("*.go").
 servers = { go = "gopls", markdown = "ltex-ls", python = "pyright-langserver --stdio" }
 
 [ignore]

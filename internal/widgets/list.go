@@ -6,7 +6,7 @@ import (
 	"github.com/charmbracelet/x/ansi"
 )
 
-// List — вертикальный список фиксированной видимой высоты.
+// List - вертикальный список фиксированной видимой высоты.
 //
 // Move/Page/Home/End прижимают выбор к границам (clamp), циклического перехода
 // нет: с последней строки Move(+1) остаётся на месте.
@@ -47,7 +47,7 @@ func (l *List) End() {
 	l.fix()
 }
 
-// Visible возвращает ровно Height строк: недостающие — пустые. Выбранная
+// Visible возвращает ровно Height строк: недостающие - пустые. Выбранная
 // строка всегда попадает в окно, Scroll подправляется при необходимости.
 func (l *List) Visible() []string {
 	if l.Height <= 0 {
@@ -65,7 +65,7 @@ func (l *List) Visible() []string {
 }
 
 // Render рисует Visible в width колонок: обрезает по ANSI-ширине, дополняет
-// пробелами и подсвечивает выбранную строку. width <= 0 — берётся l.Width.
+// пробелами и подсвечивает выбранную строку. width <= 0 - берётся l.Width.
 func (l *List) Render(width int, style Style) string {
 	if width <= 0 {
 		width = l.Width

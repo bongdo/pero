@@ -30,7 +30,7 @@ func (m *Model) toastView() (string, int, int) {
 	if y < 0 {
 		return "", 0, 0
 	}
-	// Не перекрывать курсор: если он на этой строке — поднять тост выше.
+	// Не перекрывать курсор: если он на этой строке - поднять тост выше.
 	if t := m.tab(); t != nil {
 		lay := m.layout()
 		rows := t.screenRows(lay.text.w, m.cfg.Editor.Tabsize)

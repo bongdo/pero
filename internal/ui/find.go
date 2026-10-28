@@ -168,7 +168,7 @@ func (m *Model) findStep(delta int) {
 	if m.ov.cur < 0 || m.ov.cur >= n {
 		m.ov.cur = 0
 	}
-	// Первый Enter выделяет текущее совпадение, следующие — листают.
+	// Первый Enter выделяет текущее совпадение, следующие - листают.
 	if t.ed.HasSelection() && m.ov.findMatches[m.ov.cur] == t.ed.SelectionRange() {
 		m.ov.cur = (m.ov.cur + delta%n + n) % n
 	}

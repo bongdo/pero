@@ -21,7 +21,7 @@ type pasteFallbackMsg struct {
 type clipboardWrittenMsg struct{}
 
 // copyTextCmd сначала просит OSC52, параллельно пробует системный буфер как
-// fallback (в ssh OSC52 — единственный рабочий путь).
+// fallback (в ssh OSC52 - единственный рабочий путь).
 func copyTextCmd(s string) tea.Cmd {
 	if s == "" {
 		return nil
@@ -64,7 +64,7 @@ func (m *Model) pasteClipboard() tea.Cmd {
 	)
 }
 
-// pasteText — bracketed paste терминала. Текст идёт в тот виджет, который
+// pasteText - bracketed paste терминала. Текст идёт в тот виджет, который
 // сейчас в фокусе, и никогда не меняет буфер чужой вкладки.
 func (m *Model) pasteText(s string) tea.Cmd {
 	if s == "" {
@@ -215,8 +215,8 @@ func (m *Model) duplicateLine() {
 	m.afterEdit()
 }
 
-// tryAutoPair вставляет пару вместо печатного символа. true — символ уже
-// обработан (включая read-only тост), false — обычная вставка.
+// tryAutoPair вставляет пару вместо печатного символа. true - символ уже
+// обработан (включая read-only тост), false - обычная вставка.
 func (m *Model) tryAutoPair(msg tea.KeyPressMsg) bool {
 	if !m.cfg.Editor.AutoPairs || !printable(msg) {
 		return false
@@ -239,7 +239,7 @@ func (m *Model) tryAutoPair(msg tea.KeyPressMsg) bool {
 		m.canEdit()
 		return true
 	}
-	// Закрывающая скобка перед такой же — перешагиваем, а не дублируем.
+	// Закрывающая скобка перед такой же - перешагиваем, а не дублируем.
 	if closer && !t.ed.HasSelection() {
 		line := t.ed.Buf.Line(t.ed.Cursor.Line)
 		if t.ed.Cursor.Col < len(line) && line[t.ed.Cursor.Col] == r {
@@ -249,7 +249,7 @@ func (m *Model) tryAutoPair(msg tea.KeyPressMsg) bool {
 		}
 		return false
 	}
-	// Апостроф в don't — не начало пары. С выделением оборачиваем всегда.
+	// Апостроф в don't - не начало пары. С выделением оборачиваем всегда.
 	if open == "'" && !t.ed.HasSelection() && apostropheJoinsText(t.ed) {
 		return false
 	}

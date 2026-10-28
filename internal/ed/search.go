@@ -6,7 +6,7 @@ import (
 	"unicode"
 )
 
-// FindAll ищет literal-вхождения без пересечений. Пустой запрос — ничего.
+// FindAll ищет literal-вхождения без пересечений. Пустой запрос - ничего.
 func (e *Editor) FindAll(query string, foldCase bool) []Range {
 	if query == "" {
 		return nil
@@ -59,7 +59,7 @@ func (e *Editor) findAllMultiline(q []rune, foldCase bool) []Range {
 	return out
 }
 
-// FindNext — первое совпадение начиная с from, по кругу.
+// FindNext - первое совпадение начиная с from, по кругу.
 func (e *Editor) FindNext(query string, from Pos, foldCase bool) (Range, bool) {
 	matches := e.FindAll(query, foldCase)
 	if len(matches) == 0 {
@@ -74,7 +74,7 @@ func (e *Editor) FindNext(query string, from Pos, foldCase bool) (Range, bool) {
 	return matches[0], true
 }
 
-// FindPrev — последнее совпадение до from, по кругу.
+// FindPrev - последнее совпадение до from, по кругу.
 func (e *Editor) FindPrev(query string, from Pos, foldCase bool) (Range, bool) {
 	matches := e.FindAll(query, foldCase)
 	if len(matches) == 0 {

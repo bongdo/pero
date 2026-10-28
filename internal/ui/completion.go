@@ -23,7 +23,7 @@ type completionMsg struct {
 	err     error
 }
 
-// triggerCompletion — Ctrl-Space. Позиция фиксируется до запроса: ответ на
+// triggerCompletion - Ctrl-Space. Позиция фиксируется до запроса: ответ на
 // изменившийся буфер отбрасывается.
 func (m *Model) triggerCompletion() tea.Cmd {
 	t := m.tab()
@@ -85,7 +85,7 @@ func (m *Model) onCompletion(msg completionMsg) tea.Cmd {
 	items := msg.items
 	if msg.err != nil {
 		m.failLSP(t, msg.err)
-		// LSP не ответил — не оставляем пользователя без слов из буфера.
+		// LSP не ответил - не оставляем пользователя без слов из буфера.
 		items = m.localCompletions(t, prefix)
 	} else if len(items) == 0 {
 		items = m.localCompletions(t, prefix)
@@ -95,7 +95,7 @@ func (m *Model) onCompletion(msg completionMsg) tea.Cmd {
 }
 
 // showCompletion либо сразу подставляет единственного кандидата, либо открывает
-// popup. Ноль кандидатов — info-тост, чтобы нажатие не выглядело потерянным.
+// popup. Ноль кандидатов - info-тост, чтобы нажатие не выглядело потерянным.
 func (m *Model) showCompletion(t *Tab, gen int, items []lsp.CompletionItem, prefix string, start, end int) {
 	items = dedupeCompletions(items)
 	if len(items) == 0 {
@@ -192,7 +192,7 @@ func (m *Model) localCompletions(t *Tab, prefix string) []lsp.CompletionItem {
 	return out
 }
 
-// wordBounds — слово под курсором с учётом середины слова: замена идёт по
+// wordBounds - слово под курсором с учётом середины слова: замена идёт по
 // всему слову, иначе хвост остался бы мусором.
 func wordBounds(line []rune, col int) (int, int) {
 	col = max(0, min(col, len(line)))

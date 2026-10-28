@@ -303,7 +303,7 @@ func (m *Model) doSave(t *Tab) bool {
 }
 
 // prepareSave применяет гигиену перед записью: хвостовые пробелы (только код)
-// и завершающий перевод строки. Каждая правка — своя транзакция undo; если
+// и завершающий перевод строки. Каждая правка - своя транзакция undo; если
 // менять нечего, undo не растёт.
 func (m *Model) prepareSave(t *Tab, path string) {
 	if t == nil || t.ed.Buf.ReadOnly {
@@ -454,7 +454,7 @@ func (m *Model) quitCmd() tea.Cmd {
 	return tea.Quit
 }
 
-// saveAll — для подтверждений; false, если что-то помешало (ничего не теряем).
+// saveAll - для подтверждений; false, если что-то помешало (ничего не теряем).
 func (m *Model) saveAll() bool {
 	for _, t := range m.tabs {
 		if !t.ed.Buf.Dirty() {

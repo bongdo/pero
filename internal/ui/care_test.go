@@ -70,7 +70,7 @@ func TestAutoPairApostrophe(t *testing.T) {
 		t.Fatalf("апостроф в слове: %q", got)
 	}
 
-	// Кавычка после буквы и перед буквой — обычный апостроф.
+	// Кавычка после буквы и перед буквой - обычный апостроф.
 	m = testModel(t)
 	m.tab().ed.Insert("abc")
 	m.tab().ed.SetCursor(ed.Pos{})
@@ -86,7 +86,7 @@ func TestAutoPairApostrophe(t *testing.T) {
 		t.Fatalf("двойная после буквы: %q", got)
 	}
 
-	// Кавычка после пробела — начало пары.
+	// Кавычка после пробела - начало пары.
 	m = testModel(t)
 	typeText(m, "a '")
 	if got := text(m); got != "a ''" {
@@ -270,7 +270,7 @@ func TestBracketMatchView(t *testing.T) {
 		t.Fatal("стиль пары не попал в вывод")
 	}
 
-	// Курсор сразу после закрывающей — подсветка той же пары.
+	// Курсор сразу после закрывающей - подсветка той же пары.
 	m.tab().ed.SetCursor(ed.Pos{Line: 0, Col: 8})
 	m.View()
 	pair := map[ed.Pos]bool{m.tab().bracketA: true, m.tab().bracketB: true}

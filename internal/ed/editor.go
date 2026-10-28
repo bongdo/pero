@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// Editor — курсор, выделение и транзакции поверх Buffer.
+// Editor - курсор, выделение и транзакции поверх Buffer.
 type Editor struct {
 	Buf      *Buffer
 	Cursor   Pos
@@ -113,7 +113,7 @@ func (e *Editor) selectionOrCursor() Range {
 // Insert вставляет текст, заменяя выделение, одной транзакцией.
 func (e *Editor) Insert(text string) {
 	text = normalizeNewlines(text)
-	// Группируем посимвольный набор. Замена выделения первым символом — тоже
+	// Группируем посимвольный набор. Замена выделения первым символом - тоже
 	// часть этого набора: Ctrl-A → «XYZ» → Ctrl-Z должен вернуть всё.
 	coalesce := len([]rune(text)) == 1
 	e.editRange(e.selectionOrCursor(), text, coalesce, true, false)
@@ -186,12 +186,12 @@ func (e *Editor) ClearSelection() {
 	e.Sel = Selection{}
 }
 
-// HasSelection — есть ли непустое выделение.
+// HasSelection - есть ли непустое выделение.
 func (e *Editor) HasSelection() bool {
 	return e.Sel.Active && e.Sel.Anchor != e.Cursor
 }
 
-// SelectionRange — выделение в порядке возрастания.
+// SelectionRange - выделение в порядке возрастания.
 func (e *Editor) SelectionRange() Range {
 	if !e.HasSelection() {
 		p := e.cursor()
@@ -204,7 +204,7 @@ func (e *Editor) SelectionRange() Range {
 	return Range{Start: a, End: c}
 }
 
-// SelectedText — текст выделения с "\n" между строками.
+// SelectedText - текст выделения с "\n" между строками.
 func (e *Editor) SelectedText() string {
 	if !e.HasSelection() {
 		return ""
@@ -279,7 +279,7 @@ func (e *Editor) collapse(p Pos) {
 	e.moveTo(p, false)
 }
 
-// MoveLeft — на кластер влево; без Shift сворачивает выделение к началу.
+// MoveLeft - на кластер влево; без Shift сворачивает выделение к началу.
 func (e *Editor) MoveLeft(extend bool) {
 	if !extend && e.HasSelection() {
 		e.collapse(e.SelectionRange().Start)
@@ -295,7 +295,7 @@ func (e *Editor) MoveLeft(extend bool) {
 	e.moveTo(prev, extend)
 }
 
-// MoveRight — на кластер вправо; без Shift сворачивает выделение к концу.
+// MoveRight - на кластер вправо; без Shift сворачивает выделение к концу.
 func (e *Editor) MoveRight(extend bool) {
 	if !extend && e.HasSelection() {
 		e.collapse(e.SelectionRange().End)
@@ -311,7 +311,7 @@ func (e *Editor) MoveRight(extend bool) {
 	e.moveTo(next, extend)
 }
 
-// MoveWordLeft — на слово влево.
+// MoveWordLeft - на слово влево.
 func (e *Editor) MoveWordLeft(extend bool) {
 	if !extend && e.HasSelection() {
 		e.collapse(e.SelectionRange().Start)
@@ -323,7 +323,7 @@ func (e *Editor) MoveWordLeft(extend bool) {
 	e.moveTo(p, extend)
 }
 
-// MoveWordRight — на слово вправо.
+// MoveWordRight - на слово вправо.
 func (e *Editor) MoveWordRight(extend bool) {
 	if !extend && e.HasSelection() {
 		e.collapse(e.SelectionRange().End)
@@ -372,28 +372,28 @@ func (e *Editor) vertical(delta int, extend bool) {
 	e.hasGoal = true
 }
 
-// MoveUp — на строку вверх.
+// MoveUp - на строку вверх.
 func (e *Editor) MoveUp(extend bool) { e.vertical(-1, extend) }
 
-// MoveDown — на строку вниз.
+// MoveDown - на строку вниз.
 func (e *Editor) MoveDown(extend bool) { e.vertical(1, extend) }
 
-// MoveHome — в начало строки.
+// MoveHome - в начало строки.
 func (e *Editor) MoveHome(extend bool) { e.moveTo(e.Buf.LineStart(e.Cursor), extend) }
 
-// MoveEnd — в конец строки.
+// MoveEnd - в конец строки.
 func (e *Editor) MoveEnd(extend bool) { e.moveTo(e.Buf.LineEnd(e.Cursor), extend) }
 
-// MoveDocStart — в начало файла.
+// MoveDocStart - в начало файла.
 func (e *Editor) MoveDocStart(extend bool) { e.moveTo(Pos{}, extend) }
 
-// MoveDocEnd — в конец файла.
+// MoveDocEnd - в конец файла.
 func (e *Editor) MoveDocEnd(extend bool) {
 	p := Pos{e.Buf.LastLine(), len(e.Buf.Lines[e.Buf.LastLine()])}
 	e.moveTo(p, extend)
 }
 
-// MovePage — на delta строк (высота окна передаётся вызывающим).
+// MovePage - на delta строк (высота окна передаётся вызывающим).
 func (e *Editor) MovePage(delta int, extend bool) { e.vertical(delta, extend) }
 
 // Cut вырезает выделение и возвращает текст.

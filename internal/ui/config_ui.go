@@ -9,7 +9,7 @@ import (
 )
 
 // reloadConfig перечитывает config.toml и применяет настройки к открытым
-// вкладкам. Тему не сохраняет — только читает.
+// вкладкам. Тему не сохраняет - только читает.
 func (m *Model) reloadConfig() tea.Cmd {
 	cfg, err := config.Load()
 	if err != nil {

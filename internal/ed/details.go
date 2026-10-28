@@ -3,8 +3,8 @@ package ed
 // Autopairs, парные скобки, «умный» Enter/Home и косметика пробелов.
 
 // InsertPair вставляет пару: выделение оборачивается, а если под курсором уже
-// стоит close — курсор просто перешагивает его. Пустые аргументы и read-only
-// возвращают false. Вставка пары — одна транзакция undo.
+// стоит close - курсор просто перешагивает его. Пустые аргументы и read-only
+// возвращают false. Вставка пары - одна транзакция undo.
 func (e *Editor) InsertPair(open, close string) bool {
 	if e.Buf.ReadOnly || open == "" || close == "" {
 		return false
@@ -23,7 +23,7 @@ func (e *Editor) InsertPair(open, close string) bool {
 	}
 
 	// Сначала close, потом open: cursorToEnd у второй вставки оставляет
-	// курсор между ними. Обе правки — одна группа undo.
+	// курсор между ними. Обе правки - одна группа undo.
 	e.BeginGroup()
 	e.editRange(Range{Start: cur, End: cur}, close, false, false, false)
 	e.editRange(Range{Start: cur, End: cur}, open, false, true, false)
@@ -160,7 +160,7 @@ func bracketKind(r rune) (open, close rune, ok bool) {
 	return 0, 0, false
 }
 
-// escapedAt — руна в col экранирована нечётным числом "\" перед ней.
+// escapedAt - руна в col экранирована нечётным числом "\" перед ней.
 func escapedAt(line []rune, col int) bool {
 	n := 0
 	for i := col - 1; i >= 0 && line[i] == '\\'; i-- {
@@ -175,7 +175,7 @@ func escapedAt(line []rune, col int) bool {
 //	<indent><step>
 //	<indent>}
 //
-// Курсор встаёт на внутренний отступ. Не между парой — false. Одна транзакция.
+// Курсор встаёт на внутренний отступ. Не между парой - false. Одна транзакция.
 func (e *Editor) BreakPair(open, close rune, indent, step string) bool {
 	if e.Buf.ReadOnly || e.HasSelection() {
 		return false
@@ -199,7 +199,7 @@ func (e *Editor) BreakPair(open, close rune, indent, step string) bool {
 	return true
 }
 
-// SmartHome — на первый непробельный символ строки; если курсор уже там — в 0.
+// SmartHome - на первый непробельный символ строки; если курсор уже там - в 0.
 func (e *Editor) SmartHome() {
 	cur := e.cursor()
 	col := leadingWhitespace(e.Buf.Lines[cur.Line])

@@ -120,7 +120,7 @@ func (m *Model) isSectionTitle(s string) bool {
 func (m *Model) helpCommandLine(c command) string {
 	key := c.key
 	if key == "" {
-		key = "—"
+		key = "-"
 	}
 	gap := 16 - ansiWidth(key)
 	if gap < 2 {

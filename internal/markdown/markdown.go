@@ -1,4 +1,4 @@
-// Package markdown — чистые операции над строками markdown.
+// Package markdown - чистые операции над строками markdown.
 // Пакет не знает о буфере и UI: на вход строка, на выход новая строка.
 package markdown
 
@@ -17,12 +17,12 @@ var proseExt = map[string]bool{
 	".org":      true,
 }
 
-// IsProse — файл считается прозой по расширению (регистр не важен, путь любой).
+// IsProse - файл считается прозой по расширению (регистр не важен, путь любой).
 func IsProse(path string) bool {
 	return proseExt[strings.ToLower(filepath.Ext(path))]
 }
 
-// IsCheckbox — строка уже чекбокс: после отступа идёт "- [ ] ", "- [x] ",
+// IsCheckbox - строка уже чекбокс: после отступа идёт "- [ ] ", "- [x] ",
 // "* [ ] ", "+ [x] " или голый "[ ] " / "[x] ".
 // Скобка без пробела после "] " чекбоксом не считается.
 func IsCheckbox(line string) bool {
@@ -34,7 +34,7 @@ func IsCheckbox(line string) bool {
 // сохраняя отступ и маркер списка. Если чекбокса нет, после ведущего отступа
 // вставляется "- [ ] ", остальной текст остаётся на месте.
 // Голый чекбокс остаётся голым: дефис не добавляется.
-// Функция не знает о code fence; безопасная версия — ToggleCheckboxAt.
+// Функция не знает о code fence; безопасная версия - ToggleCheckboxAt.
 func ToggleCheckbox(line string) (string, bool) {
 	at, _, checked, ok := parseCheckbox(line)
 	if !ok {
@@ -48,7 +48,7 @@ func ToggleCheckbox(line string) (string, bool) {
 	return line[:at] + box + line[at+4:], true
 }
 
-// ToggleCheckboxAt — ToggleCheckbox с учётом code fence: строки внутри ``` / ~~~
+// ToggleCheckboxAt - ToggleCheckbox с учётом code fence: строки внутри ``` / ~~~
 // и сами ограждения не меняются, возвращается ("", false).
 func ToggleCheckboxAt(lines [][]rune, line int) (string, bool) {
 	if line < 0 || line >= len(lines) {
@@ -71,8 +71,8 @@ func ListPrefix(line string) (string, bool) {
 }
 
 // ContinueList решает, что вставить по Enter. Для непустого пункта списка
-// возвращает "\n" + отступ + тот же маркер (номер +1); для пустого пункта —
-// clear=true (маркер надо убрать, вставки нет). Для не-списка — ("", false).
+// возвращает "\n" + отступ + тот же маркер (номер +1); для пустого пункта -
+// clear=true (маркер надо убрать, вставки нет). Для не-списка - ("", false).
 func ContinueList(line string) (insert string, clear bool) {
 	indent, marker, number, ok := parseList(line)
 	if !ok {
@@ -115,8 +115,8 @@ func CollapseSpaces(line string) string {
 	return b.String()
 }
 
-// FenceState помечает строки содержимого code fence: true — строка между
-// ограждениями, false — снаружи и для самих ограждений (``` и ~~~).
+// FenceState помечает строки содержимого code fence: true - строка между
+// ограждениями, false - снаружи и для самих ограждений (``` и ~~~).
 // Незакрытый fence тянется до конца; закрывающим считается ограждение того же
 // символа не короче открывающего.
 func FenceState(lines [][]rune) []bool {
@@ -140,7 +140,7 @@ func FenceState(lines [][]rune) []bool {
 	return state
 }
 
-// Sentence — грубая эвристика "это проза": больше четырёх слов и есть буквы.
+// Sentence - грубая эвристика "это проза": больше четырёх слов и есть буквы.
 func Sentence(text string) bool {
 	if len(strings.Fields(text)) <= 4 {
 		return false
@@ -153,7 +153,7 @@ func Sentence(text string) bool {
 	return false
 }
 
-// CyrillicShare — доля кириллических букв среди всех букв (0..1).
+// CyrillicShare - доля кириллических букв среди всех букв (0..1).
 // 0, если букв нет. ё/Ё входят в unicode.Cyrillic.
 func CyrillicShare(sample string) float64 {
 	var letters, cyrillic int
@@ -224,7 +224,7 @@ func leadingSpace(line string) int {
 	return i
 }
 
-// fenceRun — строка начинает ограждение кода: >=3 подряд ` или ~ после отступа.
+// fenceRun - строка начинает ограждение кода: >=3 подряд ` или ~ после отступа.
 func fenceRun(line []rune) (ch rune, n int, ok bool) {
 	i := 0
 	for i < len(line) && (line[i] == ' ' || line[i] == '\t') {

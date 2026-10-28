@@ -8,7 +8,7 @@ import (
 	"unicode"
 )
 
-// Match — результат фильтра. Positions — индексы рун в File.Rel; по ним
+// Match - результат фильтра. Positions - индексы рун в File.Rel; по ним
 // рисуется подсветка.
 type Match struct {
 	File      File
@@ -16,13 +16,13 @@ type Match struct {
 	Positions []int
 }
 
-// defaultFuzzyLimit — сколько совпадений отдавать, если limit не задан.
+// defaultFuzzyLimit - сколько совпадений отдавать, если limit не задан.
 const defaultFuzzyLimit = 200
 
 // fuzzyNameTier держит совпадения по имени выше любых совпадений по пути.
 const fuzzyNameTier = 1 << 20
 
-// Filter — регистронезависимый fuzzy-поиск по Rel и имени файла.
+// Filter - регистронезависимый fuzzy-поиск по Rel и имени файла.
 // Пустой query возвращает первые limit файлов в исходном порядке.
 func Filter(files []File, query string, limit int) []Match {
 	if limit <= 0 {

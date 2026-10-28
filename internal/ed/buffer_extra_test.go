@@ -115,7 +115,7 @@ func TestUTF16RoundTrip(t *testing.T) {
 	}{
 		{Pos{0, 0}, 0},
 		{Pos{0, 1}, 1}, // а
-		{Pos{0, 2}, 3}, // эмодзи — 2 единицы
+		{Pos{0, 2}, 3}, // эмодзи - 2 единицы
 		{Pos{0, 3}, 4}, // б
 	}
 	for _, c := range cases {
@@ -238,7 +238,7 @@ func TestGraphemeDeleteAndMove(t *testing.T) {
 		t.Fatalf("составная буква: %v %q", got, b2.Text())
 	}
 
-	// Флаг — один кластер.
+	// Флаг - один кластер.
 	b3 := New("")
 	b3.Insert(Pos{}, flag)
 	if got := b3.DeleteBackward(Pos{0, 2}); got != (Pos{0, 0}) || b3.Text() != "" {

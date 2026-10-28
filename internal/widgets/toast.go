@@ -7,8 +7,8 @@ import (
 	"github.com/charmbracelet/x/ansi"
 )
 
-// Toast — одно уведомление. Kind: success, info, warning, error, progress.
-// Until — момент исчезновения; нулевое значение означает «не истекает».
+// Toast - одно уведомление. Kind: success, info, warning, error, progress.
+// Until - момент исчезновения; нулевое значение означает «не истекает».
 type Toast struct {
 	Text  string
 	Kind  string
@@ -16,7 +16,7 @@ type Toast struct {
 }
 
 // RenderToast рисует одну строку с иконкой и цветом по типу. Ширина не больше
-// min(40, width-2); длинный текст обрезается. Истёкший тост — пустая строка.
+// min(40, width-2); длинный текст обрезается. Истёкший тост - пустая строка.
 func RenderToast(t Toast, width int, style Style) string {
 	if !t.Until.IsZero() && !t.Until.After(time.Now()) {
 		return ""

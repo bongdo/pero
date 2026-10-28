@@ -23,7 +23,7 @@ func hasModKey(msg tea.KeyPressMsg) bool {
 		msg.Mod.Contains(tea.ModMeta) || msg.Mod.Contains(tea.ModSuper)
 }
 
-// key — маршрутизация: help → confirm → popup/input → текст.
+// key - маршрутизация: help → confirm → popup/input → текст.
 func (m *Model) key(msg tea.KeyPressMsg) tea.Cmd {
 	if t := m.tab(); t != nil {
 		t.free = false
@@ -125,7 +125,7 @@ func (m *Model) overlayKey(msg tea.KeyPressMsg) tea.Cmd {
 	return nil
 }
 
-// escKey — цепочка: AI в ожидании → оверлей (закрыт выше) → ошибка →
+// escKey - цепочка: AI в ожидании → оверлей (закрыт выше) → ошибка →
 // выделение → ghost.
 func (m *Model) escKey() tea.Cmd {
 	m.pendingClose = -1
@@ -226,7 +226,7 @@ func (m *Model) indentStep() string {
 	return "\t"
 }
 
-// blockOpened — строка до курсора кончается на открывающую скобку.
+// blockOpened - строка до курсора кончается на открывающую скобку.
 func blockOpened(line []rune, col int) bool {
 	s := strings.TrimSpace(string(line[:min(col, len(line))]))
 	if s == "" {
@@ -247,7 +247,7 @@ func leadingRunes(line []rune) int {
 	return i
 }
 
-// checkboxPrefix — полный префикс чекбокса, включая маркер списка.
+// checkboxPrefix - полный префикс чекбокса, включая маркер списка.
 func checkboxPrefix(rest string) (string, bool) {
 	for _, p := range []string{"- [ ] ", "- [x] ", "- [X] ", "* [ ] ", "* [x] ", "+ [ ] ", "+ [x] "} {
 		if strings.HasPrefix(rest, p) {

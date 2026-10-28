@@ -5,8 +5,8 @@ import "time"
 // Группировка правок: правки в пределах окна объединяются в один шаг undo.
 const defaultUndoGroupWindow = 300 * time.Millisecond
 
-// change — одна непрерывная замена: old на new в позиции start.
-// Обратная операция — замена new на old.
+// change - одна непрерывная замена: old на new в позиции start.
+// Обратная операция - замена new на old.
 type change struct {
 	start Pos
 	old   string
@@ -203,12 +203,12 @@ func (e *Editor) Redo() bool {
 	return true
 }
 
-// CanUndo — есть ли что откатывать.
+// CanUndo - есть ли что откатывать.
 func (e *Editor) CanUndo() bool {
 	return !e.Buf.ReadOnly && e.groupDepth == 0 && len(e.undo) > 0
 }
 
-// CanRedo — есть ли что повторять.
+// CanRedo - есть ли что повторять.
 func (e *Editor) CanRedo() bool {
 	return !e.Buf.ReadOnly && e.groupDepth == 0 && len(e.redo) > 0
 }

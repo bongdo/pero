@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// rect — полуоткрытый прямоугольник в ячейках терминала.
+// rect - полуоткрытый прямоугольник в ячейках терминала.
 type rect struct{ x, y, w, h int }
 
 func (r rect) Contains(x, y int) bool {
@@ -25,7 +25,7 @@ type screenLayout struct {
 	findH   int
 }
 
-// layout — зоны экрана. Оверлеи, кроме строки поиска, не меняют зоны: они
+// layout - зоны экрана. Оверлеи, кроме строки поиска, не меняют зоны: они
 // рисуются поверх готовых строк.
 func (m *Model) layout() screenLayout {
 	l := screenLayout{w: max(1, m.w), h: max(1, m.h)}
@@ -71,7 +71,7 @@ func (m *Model) layout() screenLayout {
 	return l
 }
 
-// pageHeight — высота текстовой зоны для PgUp/PgDn.
+// pageHeight - высота текстовой зоны для PgUp/PgDn.
 func (m *Model) pageHeight() int {
 	if h := m.layout().text.h; h > 1 {
 		return h

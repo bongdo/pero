@@ -97,7 +97,7 @@ func (m *Model) onOpenFiles(msg openFilesMsg) tea.Cmd {
 	return m.readOpenChunk(msg.gen, m.ov.ch)
 }
 
-// pathMode — ввод похож на путь, а не на fuzzy-фильтр.
+// pathMode - ввод похож на путь, а не на fuzzy-фильтр.
 func pathMode(q string) bool {
 	return strings.HasPrefix(q, "~") || strings.HasPrefix(q, "/") || strings.HasPrefix(q, "./") || strings.HasPrefix(q, "../")
 }

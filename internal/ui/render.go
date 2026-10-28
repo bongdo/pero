@@ -302,7 +302,7 @@ func (m *Model) textRow(i int, lay screenLayout) string {
 		write(m.th.ghostOn, g)
 		used += ansiWidth(g)
 	}
-	// Перевод строки в выделении — одна ячейка после текста.
+	// Перевод строки в выделении - одна ячейка после текста.
 	if hasSel && !cursorHere && used < lay.text.w && idx == t.wrapCache.lineStart[row.logical+1]-1 &&
 		posLess(ed.Pos{Line: row.logical, Col: len(line)}, sel.End) &&
 		!posLess(ed.Pos{Line: row.logical, Col: len(line)}, sel.Start) {
@@ -514,7 +514,7 @@ func padANSI(s string, w int, style string) string {
 }
 
 // sanitizeOneLine убирает управляющие символы из имён файлов и сообщений:
-// содержимое буфера и имена — недоверенные данные, ESC в терминал не пускаем.
+// содержимое буфера и имена - недоверенные данные, ESC в терминал не пускаем.
 func sanitizeOneLine(s string) string {
 	if s == "" {
 		return s

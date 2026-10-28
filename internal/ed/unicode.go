@@ -2,7 +2,7 @@ package ed
 
 import "unicode"
 
-// Правила склейки графемных кластеров — упрощённый UAX #29.
+// Правила склейки графемных кластеров - упрощённый UAX #29.
 // Позиции в буфере остаются по рунам, но курсор и удаление двигаются по
 // кластерам, чтобы не разрывать эмодзи, флаги и составные буквы.
 
@@ -71,7 +71,7 @@ func graphemeBreak(line []rune, i int) bool {
 	return !hangulJoin(prev, cur)
 }
 
-// clusterEnd — индекс после кластера, начинающегося в start.
+// clusterEnd - индекс после кластера, начинающегося в start.
 func clusterEnd(line []rune, start int) int {
 	if start < 0 {
 		start = 0
@@ -86,7 +86,7 @@ func clusterEnd(line []rune, start int) int {
 	return i
 }
 
-// clusterStart — индекс начала кластера, заканчивающегося в end.
+// clusterStart - индекс начала кластера, заканчивающегося в end.
 func clusterStart(line []rune, end int) int {
 	if end > len(line) {
 		end = len(line)

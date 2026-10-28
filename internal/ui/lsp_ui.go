@@ -34,7 +34,7 @@ const (
 	lspStartupWait = 30 * time.Second
 )
 
-// lspEvent — диагностика, пришедшая от конкретного клиента. Клиент и URI
+// lspEvent - диагностика, пришедшая от конкретного клиента. Клиент и URI
 // проверяются в Update: события закрытой вкладки не попадают в UI.
 type lspEvent struct {
 	client     *lsp.Client
@@ -241,7 +241,7 @@ func (m *Model) lspEnsure(t *Tab) tea.Cmd {
 	}
 }
 
-// lspCommandFor — prose проверяется спелл-сервером, код — ServerFor.
+// lspCommandFor - prose проверяется спелл-сервером, код - ServerFor.
 func (m *Model) lspCommandFor(t *Tab) (command, languageID string) {
 	path := t.ed.Buf.Path
 	if path == "" {

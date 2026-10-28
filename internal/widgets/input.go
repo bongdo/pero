@@ -7,7 +7,7 @@ import (
 	"github.com/charmbracelet/x/ansi"
 )
 
-// Input — однострочное поле ввода. Cursor — индекс руны в Text, а не байт.
+// Input - однострочное поле ввода. Cursor - индекс руны в Text, а не байт.
 // Переводы строк и табы схлопываются в пробелы: поле всегда одной строкой.
 type Input struct {
 	Text        []rune
@@ -114,8 +114,8 @@ func (i *Input) End() {
 	i.Cursor = len(i.Text)
 }
 
-// WordLeft переносит курсор на слово влево. Слово — непрерывный кусок без
-// пробелов (пунктуация считается частью слова — удобно для путей и флагов).
+// WordLeft переносит курсор на слово влево. Слово - непрерывный кусок без
+// пробелов (пунктуация считается частью слова - удобно для путей и флагов).
 func (i *Input) WordLeft() {
 	i.SelAll = false
 	i.clampCursor()
@@ -195,7 +195,7 @@ func (i *Input) Render(width int, style Style) string {
 	}
 
 	visible := ansi.Cut(string(i.Text), offset, offset+width)
-	// Cut может вернуть широкий кластер, начавшийся до offset, — подрезаем.
+	// Cut может вернуть широкий кластер, начавшийся до offset, - подрезаем.
 	visible = ansi.Truncate(visible, width, "")
 	prefix := style.BG + style.Text
 	fill := style.BG

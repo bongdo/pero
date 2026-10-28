@@ -17,7 +17,7 @@ func (m *Model) trf(formatRu, formatEn string, args ...any) string {
 	return fmt.Sprintf(m.tr(formatRu, formatEn), args...)
 }
 
-// count — число с существительным: в русском три формы, в английском две.
+// count - число с существительным: в русском три формы, в английском две.
 func (m *Model) count(n int, ruOne, ruFew, ruMany, enOne, enMany string) string {
 	if m.cfg.Language == "ru" {
 		return itoa(n) + " " + pluralRu(n, ruOne, ruFew, ruMany)

@@ -21,7 +21,7 @@ func TestClickPlacesCursorExactly(t *testing.T) {
 	if m.tab().ed.Cursor != (ed.Pos{Line: 0, Col: 2}) {
 		t.Fatalf("курсор %+v", m.tab().ed.Cursor)
 	}
-	// Клик после последней руны — конец строки.
+	// Клик после последней руны - конец строки.
 	x = lay.gutterW + 5
 	m.mouseClick(tea.Mouse{X: x, Y: y, Button: tea.MouseLeft})
 	if m.tab().ed.Cursor.Col != 5 {

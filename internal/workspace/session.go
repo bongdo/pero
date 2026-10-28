@@ -10,7 +10,7 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-// LoadRecent читает recent из state-файла. Нет файла — пустой список.
+// LoadRecent читает recent из state-файла. Нет файла - пустой список.
 // Остальные ключи state-файла игнорируются.
 func LoadRecent(path string) ([]string, error) {
 	var doc struct {

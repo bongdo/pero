@@ -31,7 +31,7 @@ type lspResolveMsg struct {
 }
 
 // quickfixCmd собирает диагностики текущей строки и спрашивает codeAction с
-// диапазоном всей строки — так делают ltex и большинство серверов.
+// диапазоном всей строки - так делают ltex и большинство серверов.
 func (m *Model) quickfixCmd() tea.Cmd {
 	t := m.tab()
 	if t == nil {
@@ -154,7 +154,7 @@ func (m *Model) quickfixMove(delta int) {
 }
 
 // applyCodeAction применяет Edit или выполняет серверную команду. Команда
-// может привести к workspace/applyEdit — его обрабатывает lspApplyMsg.
+// может привести к workspace/applyEdit - его обрабатывает lspApplyMsg.
 func (m *Model) applyCodeAction(t *Tab, action lsp.CodeAction) tea.Cmd {
 	m.closeOverlays()
 	if action.Edit != nil {
@@ -218,7 +218,7 @@ func (m *Model) onResolve(msg lspResolveMsg) tea.Cmd {
 	return m.applyWorkspaceEdit(msg.action.Edit, msg.action.Title)
 }
 
-// applyWorkspaceEdit правит все затронутые файлы; на каждый файл — одна
+// applyWorkspaceEdit правит все затронутые файлы; на каждый файл - одна
 // транзакция. Файлы, которых нет среди вкладок, открываются.
 func (m *Model) applyWorkspaceEdit(edit *lsp.WorkspaceEdit, title string) tea.Cmd {
 	if edit == nil || len(edit.Changes) == 0 {

@@ -9,7 +9,7 @@ import (
 	"github.com/bongdo/pero/internal/widgets"
 )
 
-// sgrTheme — готовые ANSI-префиксы для горячего рендера. Пустая строка значит
+// sgrTheme - готовые ANSI-префиксы для горячего рендера. Пустая строка значит
 // «без стиля». lipgloss в этом файле не используется намеренно.
 type sgrTheme struct {
 	bg, panel, border, text, muted, accent string
@@ -43,7 +43,7 @@ func newSGRTheme(c config.Theme) sgrTheme {
 		diagError: fgSGR(c.DiagnosticError), diagWarning: fgSGR(c.DiagnosticWarning),
 		diagInfo: fgSGR(c.DiagnosticInfo),
 	}
-	// Фон текста — отдельным префиксом: если тема его не задаёт, остаётся
+	// Фон текста - отдельным префиксом: если тема его не задаёт, остаётся
 	// терминальный фон.
 	baseBG := bgSGR(c.BG)
 	th.base = baseBG + th.text
@@ -89,7 +89,7 @@ func (th sgrTheme) widgetStyle() widgets.Style {
 	}
 }
 
-// diagUnderline — SGR подчёркивания, не меняющий цвет текста: 4 + цвет линии.
+// diagUnderline - SGR подчёркивания, не меняющий цвет текста: 4 + цвет линии.
 func (th sgrTheme) diagUnderline(severity int, current bool) string {
 	c := th.diagInfo
 	switch severity {

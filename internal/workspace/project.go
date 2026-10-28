@@ -1,4 +1,4 @@
-// Package workspace — проект, файлы, fuzzy-поиск и недавние файлы для pero.
+// Package workspace - проект, файлы, fuzzy-поиск и недавние файлы для pero.
 package workspace
 
 import (
@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// File — файл проекта. Rel считается от корня проекта.
+// File - файл проекта. Rel считается от корня проекта.
 type File struct {
 	Path    string
 	Rel     string
@@ -20,20 +20,20 @@ type File struct {
 	IsDir   bool
 }
 
-// defaultIgnoreDirs — игнор, если вызывающий не передал свой список.
+// defaultIgnoreDirs - игнор, если вызывающий не передал свой список.
 var defaultIgnoreDirs = []string{
 	".git", ".jj", "node_modules", "target", ".direnv",
 	"result*", "dist", "build", ".cache",
 }
 
-// defaultListLimit и listTimeout — предохранители для очень больших проектов.
+// defaultListLimit и listTimeout - предохранители для очень больших проектов.
 const (
 	defaultListLimit = 100_000
 	listTimeout      = 2 * time.Second
 )
 
 // Root возвращает абсолютный корень проекта: вверх до каталога с .git или .jj,
-// иначе стартовый каталог. Если start — файл, берётся его каталог.
+// иначе стартовый каталог. Если start - файл, берётся его каталог.
 func Root(start string) string {
 	if start == "" {
 		start = "."
@@ -118,7 +118,7 @@ func walkDir(ctx context.Context, root, dir string, ignoreDirs []string, out cha
 		}
 		size, modTime := info.Size(), info.ModTime()
 		// Симлинк на обычный файл показываем с размером цели; на каталог,
-		// битый и прочие цели — пропускаем, внутрь не идём.
+		// битый и прочие цели - пропускаем, внутрь не идём.
 		if info.Mode()&os.ModeSymlink != 0 {
 			target, err := os.Stat(path)
 			if err != nil || !target.Mode().IsRegular() {
@@ -140,7 +140,7 @@ func walkDir(ctx context.Context, root, dir string, ignoreDirs []string, out cha
 	}
 }
 
-// List собирает до limit файлов (0 — 100k) не дольше двух секунд и сортирует
+// List собирает до limit файлов (0 - 100k) не дольше двух секунд и сортирует
 // их по Rel. Порядок детерминирован.
 func List(ctx context.Context, root string, ignoreDirs []string, limit int) []File {
 	if limit <= 0 {
@@ -170,7 +170,7 @@ func List(ctx context.Context, root string, ignoreDirs []string, limit int) []Fi
 	return files
 }
 
-// IsBinary — файл бинарный, если в первых 8 КБ есть NUL.
+// IsBinary - файл бинарный, если в первых 8 КБ есть NUL.
 func IsBinary(data []byte) bool {
 	if len(data) > 8192 {
 		data = data[:8192]
@@ -189,12 +189,12 @@ var codeExts = map[string]bool{
 	".ini": true,
 }
 
-// IsProse — текстовый формат (markdown/rst/org/plain).
+// IsProse - текстовый формат (markdown/rst/org/plain).
 func IsProse(path string) bool {
 	return proseExts[strings.ToLower(filepath.Ext(path))]
 }
 
-// IsCode — язык программирования или конфиг.
+// IsCode - язык программирования или конфиг.
 func IsCode(path string) bool {
 	return codeExts[strings.ToLower(filepath.Ext(path))]
 }

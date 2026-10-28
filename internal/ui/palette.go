@@ -192,7 +192,7 @@ func (m *Model) paletteKey(msg tea.KeyPressMsg) tea.Cmd {
 	return nil
 }
 
-// renderInput — строка ввода с блочным курсором и горизонтальным скроллом.
+// renderInput - строка ввода с блочным курсором и горизонтальным скроллом.
 func renderInput(in *widgets.Input, width int, textStyle, cursorStyle string) string {
 	if width <= 0 {
 		return ""

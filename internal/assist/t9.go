@@ -1,4 +1,4 @@
-// Package assist — подсказки редактора: t9 по словам буфера, ghost-кандидаты
+// Package assist - подсказки редактора: t9 по словам буфера, ghost-кандидаты
 // и запуск opencode. Пакет не знает про UI, буфер и LSP: только текст на входе.
 package assist
 
@@ -9,7 +9,7 @@ import (
 	"unicode/utf8"
 )
 
-// WordIndex — частоты слов буфера. Хранит только слова и счётчики, не текст.
+// WordIndex - частоты слов буфера. Хранит только слова и счётчики, не текст.
 type WordIndex struct {
 	freq map[string]int
 }
@@ -23,7 +23,7 @@ func NewWordIndex() *WordIndex {
 func (w *WordIndex) Index(text string) {
 	freq := make(map[string]int)
 
-	// Один проход по тексту без []rune: слова — подстроки исходного текста.
+	// Один проход по тексту без []rune: слова - подстроки исходного текста.
 	// Ключ копируется только при первом вхождении, чтобы индекс не держал
 	// в памяти весь буфер.
 	start := -1
@@ -31,7 +31,7 @@ func (w *WordIndex) Index(text string) {
 	content := false
 	var kinds [256]struct {
 		r rune
-		k uint8 // 1 — разделитель, 2 — буква, 3 — цифра
+		k uint8 // 1 - разделитель, 2 - буква, 3 - цифра
 	}
 	flush := func(end int) {
 		if start < 0 {
@@ -90,7 +90,7 @@ func (w *WordIndex) Index(text string) {
 
 func addWord(freq map[string]int, raw string, runes int, content bool) {
 	word := raw
-	// дефис — только внутри слова, не по краям
+	// дефис - только внутри слова, не по краям
 	if raw[0] == '-' || raw[len(raw)-1] == '-' {
 		word = strings.Trim(raw, "-")
 		runes = utf8.RuneCountInString(word)
@@ -106,7 +106,7 @@ func addWord(freq map[string]int, raw string, runes int, content bool) {
 }
 
 // Candidates возвращает слова с регистронезависимым префиксом: сначала по
-// частоте, затем по алфавиту. limit <= 0 — без ограничения.
+// частоте, затем по алфавиту. limit <= 0 - без ограничения.
 func (w *WordIndex) Candidates(prefix string, limit int) []string {
 	if w == nil || len(w.freq) == 0 {
 		return nil
@@ -138,13 +138,13 @@ func (w *WordIndex) Candidates(prefix string, limit int) []string {
 	return out
 }
 
-// IsWordRune — символ слова для t9, WordPrefix и выделения.
+// IsWordRune - символ слова для t9, WordPrefix и выделения.
 func IsWordRune(r rune) bool {
 	return unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_' || r == '-'
 }
 
-// WordPrefix возвращает слово прямо перед курсором. col — индекс руны.
-// Дефис внутри слова сохраняется, по краям — отбрасывается.
+// WordPrefix возвращает слово прямо перед курсором. col - индекс руны.
+// Дефис внутри слова сохраняется, по краям - отбрасывается.
 func WordPrefix(line []rune, col int) string {
 	if col < 0 {
 		return ""

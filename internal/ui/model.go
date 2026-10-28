@@ -19,12 +19,12 @@ import (
 	"github.com/bongdo/pero/internal/workspace"
 )
 
-// Options — что открыть при старте.
+// Options - что открыть при старте.
 type Options struct {
 	Root    string     // корень проекта (абсолютный)
-	Initial *ed.Buffer // явный файл (nil — восстановить сессию или пустой буфер)
+	Initial *ed.Buffer // явный файл (nil - восстановить сессию или пустой буфер)
 	Empty   bool       // явно пустой буфер (аргумент "-" или каталог)
-	Warning string     // предупреждение конфига — тостом после старта
+	Warning string     // предупреждение конфига - тостом после старта
 }
 
 type overlayKind int
@@ -46,7 +46,7 @@ const (
 	overlayAI
 )
 
-// Tab — вкладка = буфер = файл.
+// Tab - вкладка = буфер = файл.
 type Tab struct {
 	ed   *ed.Editor
 	top  int // первая видимая экранная строка
@@ -82,13 +82,13 @@ type Tab struct {
 	bracketA, bracketB ed.Pos
 	bracketOK          bool
 
-	// roReason — почему буфер read-only ("binary"/"large"); пусто — без причины.
+	// roReason - почему буфер read-only ("binary"/"large"); пусто - без причины.
 	roReason string
 
 	wrapCache wrapCache
 }
 
-// visibleDiags — диагностики, которые относятся к текущей версии буфера.
+// visibleDiags - диагностики, которые относятся к текущей версии буфера.
 // LSP присылает их асинхронно; старые позиции после правки показывать нельзя.
 func (t *Tab) visibleDiags() []lsp.Diagnostic {
 	if t == nil || t.diagVersion != t.ed.Buf.Version {
@@ -177,7 +177,7 @@ type clickState struct {
 	tab   int
 }
 
-// Model — состояние редактора.
+// Model - состояние редактора.
 type Model struct {
 	cfg   config.Config
 	theme config.Theme
@@ -205,7 +205,7 @@ type Model struct {
 	pendingPaste bool
 	pasteSeq     int
 	pasteTab     *Tab // вкладка, в которую вставляем: Ctrl-V не должен уехать в другую
-	pendingClose int  // вкладка, которую закрыть после сохранения; -1 — нет
+	pendingClose int  // вкладка, которую закрыть после сохранения; -1 - нет
 
 	drag      dragState
 	click     clickState
@@ -353,7 +353,7 @@ func (m *Model) restoreTabs(tabs []config.TabState) ([]*Tab, int) {
 	return out, skipped
 }
 
-// Update — единственный цикл; горутины общаются только сообщениями.
+// Update - единственный цикл; горутины общаются только сообщениями.
 func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	switch msg := msg.(type) {
@@ -366,7 +366,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyPressMsg:
 		cmd = m.key(msg)
 	case tea.FocusMsg:
-		// Вернулись из другого окна — файл на диске мог измениться.
+		// Вернулись из другого окна - файл на диске мог измениться.
 		if m.ov.kind == overlayNone {
 			m.checkExternalActive()
 		}
@@ -507,7 +507,7 @@ func (m *Model) setToast(kind, text string) {
 	case "warning":
 		d = 5 * time.Second
 	case "error", "progress":
-		// error живёт до Esc; progress — до завершения.
+		// error живёт до Esc; progress - до завершения.
 	default:
 		d = 3 * time.Second
 	}
@@ -553,7 +553,7 @@ func (m *Model) afterEditTab(t *Tab) {
 	t.ghost = ghostState{}
 	t.deleted = false
 	m.lspDidChange(t)
-	// Ghost — только для активной вкладки: фоновая правка не должна
+	// Ghost - только для активной вкладки: фоновая правка не должна
 	// показывать подсказку поверх чужого текста.
 	if t == m.tab() {
 		m.scheduleGhost()

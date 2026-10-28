@@ -6,13 +6,13 @@ import (
 	"strings"
 )
 
-// DisplayName — базовое имя файла для вкладки.
+// DisplayName - базовое имя файла для вкладки.
 func DisplayName(path string) string {
 	return filepath.Base(path)
 }
 
 // Disambiguate возвращает имя для каждого пути: базовое имя, а при совпадении
-// базовых имён — минимально различающийся суффикс пути. Абсолютный путь
+// базовых имён - минимально различающийся суффикс пути. Абсолютный путь
 // попадает в результат только если относительных компонентов не хватило.
 func Disambiguate(paths []string) map[string]string {
 	names := make(map[string]string, len(paths))
@@ -55,7 +55,7 @@ func Disambiguate(paths []string) map[string]string {
 	return names
 }
 
-// uniqueTail — хвост из depth компонентов каталога не встречается у других
+// uniqueTail - хвост из depth компонентов каталога не встречается у других
 // путей группы.
 func uniqueTail(group []string, path string, tail []string, depth int) bool {
 	for _, other := range group {

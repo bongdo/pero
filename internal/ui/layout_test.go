@@ -8,7 +8,7 @@ func TestLayoutSizes(t *testing.T) {
 	for _, tc := range []struct{ w, h int }{{40, 10}, {80, 24}, {160, 50}, {20, 5}, {1, 1}} {
 		m := testModel(t)
 		setSize(m, tc.w, tc.h)
-		typeText(m, "привет 😀\n\tвторая строка — длинная-предлинная-предлинная-предлинная")
+		typeText(m, "привет 😀\n\tвторая строка - длинная-предлинная-предлинная-предлинная")
 		viewLines(t, m)
 		lay := m.layout()
 		if lay.text.w < 0 || lay.text.h < 0 {

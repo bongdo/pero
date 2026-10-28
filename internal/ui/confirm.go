@@ -99,11 +99,11 @@ func (m *Model) activateConfirm(choice int) tea.Cmd {
 	if choice < 0 || choice >= len(m.confirmButtons()) {
 		return nil
 	}
-	// Внешнее изменение: 0 — перезагрузить, 1 — оставить моё.
+	// Внешнее изменение: 0 - перезагрузить, 1 - оставить моё.
 	if c.kind == confirmExternal {
 		return m.resolveExternal(choice == 0)
 	}
-	// Остальные: 0 — сохранить, 1 — без сохранения, 2 — отмена.
+	// Остальные: 0 - сохранить, 1 - без сохранения, 2 - отмена.
 	switch choice {
 	case 0:
 		return m.confirmSave(c)

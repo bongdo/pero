@@ -11,7 +11,7 @@ import (
 	"github.com/bongdo/pero/internal/ed"
 )
 
-// screenRow — одна экранная строка: кусок логической строки плюс отступ,
+// screenRow - одна экранная строка: кусок логической строки плюс отступ,
 // который рисуется перед содержимым при переносе.
 type screenRow struct {
 	logical            int
@@ -20,7 +20,7 @@ type screenRow struct {
 	indent             int // ячеек отступа у продолжения
 }
 
-// cluster — графемный кластер: единица отрисовки и ширины.
+// cluster - графемный кластер: единица отрисовки и ширины.
 type cluster struct {
 	start, end int // индексы рун [start,end)
 	col        int // экранная колонка начала
@@ -35,7 +35,7 @@ func lineClusters(line []rune, tabsize int) []cluster {
 	if len(line) == 0 {
 		return nil
 	}
-	// Быстрый путь для латиницы/кириллицы: каждая руна — отдельный кластер.
+	// Быстрый путь для латиницы/кириллицы: каждая руна - отдельный кластер.
 	// uniseg нужен только для комбинирующих/эмодзи/табов.
 	if simpleLine(line) {
 		out := make([]cluster, 0, len(line))
@@ -81,7 +81,7 @@ func lineClusters(line []rune, tabsize int) []cluster {
 	return out
 }
 
-// simpleLine — руны без комбинирования, ZWJ, эмодзи, CJK, табов и
+// simpleLine - руны без комбинирования, ZWJ, эмодзи, CJK, табов и
 // variation selectors. Для таких строк ширина руны = runewidth.
 func simpleLine(line []rune) bool {
 	for _, r := range line {
@@ -225,7 +225,7 @@ func rowForPos(rows []screenRow, lineStart []int, p ed.Pos) int {
 	return hi - 1
 }
 
-// rowScreenCol — экранная колонка логической позиции внутри её строки
+// rowScreenCol - экранная колонка логической позиции внутри её строки
 // (без горизонтального скролла).
 func rowScreenCol(t *Tab, rows []screenRow, rowIdx int, col, tabsize int) int {
 	if rowIdx < 0 || rowIdx >= len(rows) {
@@ -241,7 +241,7 @@ func rowScreenCol(t *Tab, rows []screenRow, rowIdx int, col, tabsize int) int {
 	return x
 }
 
-// screenColOf — экранная колонка начала кластера, содержащего col.
+// screenColOf - экранная колонка начала кластера, содержащего col.
 func screenColOf(line []rune, col, tabsize int) int {
 	col = max(0, min(col, len(line)))
 	total := 0
@@ -259,7 +259,7 @@ func screenColOf(line []rune, col, tabsize int) int {
 	return total
 }
 
-// posAtRow — обратное к rowScreenCol: экранная ячейка → логическая позиция.
+// posAtRow - обратное к rowScreenCol: экранная ячейка → логическая позиция.
 // cell уже без учёта горизонтального сдвига; left применяется только без wrap.
 func posAtRow(t *Tab, rows []screenRow, rowIdx, cell, left, tabsize int, wrap bool) ed.Pos {
 	if rowIdx < 0 || rowIdx >= len(rows) {
@@ -290,7 +290,7 @@ func posAtRow(t *Tab, rows []screenRow, rowIdx, cell, left, tabsize int, wrap bo
 	return ed.Pos{Line: r.logical, Col: r.runeEnd}
 }
 
-// displayCols — экранная колонка каждой руны (tabs раскрываются, эмодзи
+// displayCols - экранная колонка каждой руны (tabs раскрываются, эмодзи
 // считаются кластером).
 func displayCols(line []rune, tabsize int) []int {
 	cols := make([]int, len(line)+1)
@@ -344,7 +344,7 @@ func wrapLine(line []rune, logical, width, tabsize int) []screenRow {
 			cl := clusters[end]
 			if used+cl.width > avail {
 				if end == start {
-					end++ // кластер шире строки — рисуем как есть
+					end++ // кластер шире строки - рисуем как есть
 				}
 				break
 			}
@@ -384,7 +384,7 @@ func posLess(a, b ed.Pos) bool {
 	return a.Line < b.Line || (a.Line == b.Line && a.Col < b.Col)
 }
 
-// screenHeight — высота текстовой зоны; PgUp/PgDn двигают на неё, а не на
+// screenHeight - высота текстовой зоны; PgUp/PgDn двигают на неё, а не на
 // число логических строк (важно для softwrap).
 func (m *Model) screenHeight() int {
 	if lay := m.layout(); lay.text.h > 0 {

@@ -8,14 +8,14 @@ import (
 
 const sgrReset = "\x1b[0m"
 
-// Style — ANSI SGR-префиксы для виджетов. Пустое поле означает «без стиля».
+// Style - ANSI SGR-префиксы для виджетов. Пустое поле означает «без стиля».
 // Префиксы просто конкатенируются, поэтому BG и Text обычно задают вместе.
 type Style struct {
 	BG, Border, Text, Muted, SelectedBG, SelectedFG, Error, Warning string
 }
 
-// Box — содержимое попапа. Width — доступная ширина (например, экран):
-// внутренняя ширина не превышает Width-4. Width <= 0 — без ограничения.
+// Box - содержимое попапа. Width - доступная ширина (например, экран):
+// внутренняя ширина не превышает Width-4. Width <= 0 - без ограничения.
 type Box struct {
 	Title, Footer string
 	Rows          []string
@@ -87,7 +87,7 @@ func bottomBorder(footer string, inner int, border, muted string) string {
 	return paint(border, "╰") + mid + paint(border, "╯")
 }
 
-// paint оборачивает текст SGR-префиксом и сбросом. Пустой префикс — без стиля.
+// paint оборачивает текст SGR-префиксом и сбросом. Пустой префикс - без стиля.
 func paint(prefix, s string) string {
 	if prefix == "" || s == "" {
 		return s

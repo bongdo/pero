@@ -17,7 +17,7 @@ func isMarkdownPath(path string) bool {
 	return false
 }
 
-// lineInFence — строка внутри ``` или ~~~ (сами ограждения тоже считаются кодом).
+// lineInFence - строка внутри ``` или ~~~ (сами ограждения тоже считаются кодом).
 func (e *Editor) lineInFence(line int) bool {
 	open := false
 	var fence byte
@@ -104,7 +104,7 @@ func leadingWhitespace(line []rune) int {
 	return n
 }
 
-// listMarkerLen — длина маркера списка ("- ", "1. ") в начале rest.
+// listMarkerLen - длина маркера списка ("- ", "1. ") в начале rest.
 func listMarkerLen(rest []rune) int {
 	if len(rest) >= 2 && (rest[0] == '-' || rest[0] == '*' || rest[0] == '+') && rest[1] == ' ' {
 		return 2
@@ -143,8 +143,8 @@ func continueMarker(rest []rune) (int, string, bool) {
 	return 0, "", false
 }
 
-// ContinueList — Enter в строке списка: сам вставляет перевод строки и маркер
-// (или убирает маркер пустого пункта). Сигнатура без возврата — по контракту.
+// ContinueList - Enter в строке списка: сам вставляет перевод строки и маркер
+// (или убирает маркер пустого пункта). Сигнатура без возврата - по контракту.
 func (e *Editor) ContinueList() {
 	if e.Buf.ReadOnly || !isMarkdownPath(e.Buf.Path) {
 		return

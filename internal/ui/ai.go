@@ -25,7 +25,7 @@ type aiMsg struct {
 	err     error
 }
 
-// aiSuggest — Alt-a: выделение или текущая строка уходит в opencode, результат
+// aiSuggest - Alt-a: выделение или текущая строка уходит в opencode, результат
 // ждёт в popup и в буфер сам не попадает.
 func (m *Model) aiSuggest() tea.Cmd {
 	t := m.tab()
@@ -68,7 +68,7 @@ func (m *Model) aiSuggest() tea.Cmd {
 	prompt := aiPrompt(t.ed.Buf.Path, m.fileType(t), assist.TruncateRunes(text, 60000))
 	// Прогресс важнее старого тоста: явный Alt-a начинает новое действие.
 	m.toastSeq++
-	m.toast = widgets.Toast{Kind: "progress", Text: m.tr("AI думает… (Esc — отмена)", "AI is thinking… (Esc to cancel)")}
+	m.toast = widgets.Toast{Kind: "progress", Text: m.tr("AI думает… (Esc - отмена)", "AI is thinking… (Esc to cancel)")}
 	return func() tea.Msg {
 		out, err := assist.RunOpencode(ctx, prompt)
 		return aiMsg{tab: t, gen: gen, version: version, pos: pos, rng: rng, replace: replace, text: out, err: err}

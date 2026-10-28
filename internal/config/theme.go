@@ -2,7 +2,7 @@ package config
 
 import "strings"
 
-// Theme — цвета интерфейса и синтаксиса. Значения — hex (#RRGGBB) или номера
+// Theme - цвета интерфейса и синтаксиса. Значения - hex (#RRGGBB) или номера
 // ANSI, пригодные для lipgloss.
 type Theme struct {
 	Name              string
@@ -42,7 +42,7 @@ type Theme struct {
 	Punctuation string
 }
 
-// themeOrder — стабильный порядок: базовые, catppuccin, gruvbox, tokyonight,
+// themeOrder - стабильный порядок: базовые, catppuccin, gruvbox, tokyonight,
 // классические, ayu, kanagawa, rose-pine, github и прочие.
 var themeOrder = []string{
 	"everforest", "vesper", "nord", "plain",
@@ -455,7 +455,7 @@ var themes = map[string]Theme{
 	},
 }
 
-// ThemeByName возвращает тему по имени; неизвестное имя — plain.
+// ThemeByName возвращает тему по имени; неизвестное имя - plain.
 func ThemeByName(name string) Theme {
 	if t, ok := themes[strings.ToLower(strings.TrimSpace(name))]; ok {
 		return t
@@ -463,7 +463,7 @@ func ThemeByName(name string) Theme {
 	return themes["plain"]
 }
 
-// ThemeNames — имена встроенных тем в стабильном порядке.
+// ThemeNames - имена встроенных тем в стабильном порядке.
 func ThemeNames() []string {
 	return append([]string(nil), themeOrder...)
 }

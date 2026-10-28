@@ -13,23 +13,23 @@ highlighting, diagnostics and inline completion.
 
 ## Features
 
-- **Tabs and session** — open files in tabs, restore tabs and cursor positions
+- **Tabs and session** - open files in tabs, restore tabs and cursor positions
   on the next launch.
-- **Modeless editing** — selections with mouse or keyboard, undo/redo with
+- **Modeless editing** - selections with mouse or keyboard, undo/redo with
   grouped edits, autopairs, bracket wrapping, smart Backspace/Enter/Home.
-- **Search and replace** — `Ctrl-F` and `Ctrl-H`, with visible matches.
-- **Fuzzy open** — `Ctrl-P` searches files in the project and recent files.
-- **Command palette** — `Ctrl-E` opens a filterable list of commands; the path
+- **Search and replace** - `Ctrl-F` and `Ctrl-H`, with visible matches.
+- **Fuzzy open** - `Ctrl-P` searches files in the project and recent files.
+- **Command palette** - `Ctrl-E` opens a filterable list of commands; the path
   mode (`Ctrl-P` inside the palette) opens files by path.
-- **LSP** — diagnostics, hover, definition, references, formatting, completion,
+- **LSP** - diagnostics, hover, definition, references, formatting, completion,
   quickfix and signature help. Servers are configured per filetype.
-- **Ghost text** — suggestions from LSP and words already in the buffer, shown
+- **Ghost text** - suggestions from LSP and words already in the buffer, shown
   after 250 ms; `Tab` accepts the current suggestion.
-- **AI assist** — `Alt-a` sends the selection to `opencode run` and inserts the
+- **AI assist** - `Alt-a` sends the selection to `opencode run` and inserts the
   result after confirmation; the UI never blocks on it.
-- **Themes and language** — 33 syntax themes, `theme` in the config; the UI is
+- **Themes and language** - 33 syntax themes, `theme` in the config; the UI is
   available in English and Russian (`language = "en" | "ru"`).
-- **Markdown care** — checkbox toggle (`Alt-t`), list continuation, spell check
+- **Markdown care** - checkbox toggle (`Alt-t`), list continuation, spell check
   through ltex/harper, and a softwrap mode for prose.
 
 ## Install

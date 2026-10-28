@@ -91,7 +91,7 @@ func (m *Model) onGhostTick(msg ghostTickMsg) tea.Cmd {
 	return m.ghostSuggest(t, prefix)
 }
 
-// ghostSuggest выбирает один источник: prose — t9, code — LSP. Чужие
+// ghostSuggest выбирает один источник: prose - t9, code - LSP. Чужие
 // варианты не смешиваются.
 func (m *Model) ghostSuggest(t *Tab, prefix string) tea.Cmd {
 	if m.isProsePath(t.ed.Buf.Path) {
@@ -165,7 +165,7 @@ func ghostFrom(source, prefix string, candidates []string) (ghostState, bool) {
 	return ghostState{text: text, source: s.Source}, true
 }
 
-// ghostSuffix — только то, что реально дописывается: полное слово минус
+// ghostSuffix - только то, что реально дописывается: полное слово минус
 // уже набранный префикс.
 func ghostSuffix(prefix, candidate string) string {
 	pr, cr := []rune(prefix), []rune(candidate)

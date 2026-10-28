@@ -103,7 +103,7 @@ func truncateBytes(s string, limit int) string {
 }
 
 // DetectLanguage выбирает язык спеллчека по доле кириллицы среди букв:
-// >= 0.15 — "ru" (ltex), иначе "en" (harper).
+// >= 0.15 - "ru" (ltex), иначе "en" (harper).
 func DetectLanguage(sample string) string {
 	var letters, cyrillic int
 	for _, r := range sample {

@@ -13,7 +13,7 @@ func TestRenderEmptyAndUnicode(t *testing.T) {
 		m := testModel(t)
 		setSize(m, tc.w, tc.h)
 		viewLines(t, m)
-		typeText(m, "привет, ёжик 😀 — test\n\tтаб")
+		typeText(m, "привет, ёжик 😀 - test\n\tтаб")
 		viewLines(t, m)
 		if !strings.Contains(text(m), "ёжик") {
 			t.Fatalf("unicode потерялся: %q", text(m))

@@ -9,7 +9,7 @@ import (
 	"github.com/bongdo/pero/internal/ed"
 )
 
-// command — действие, доступное и с клавиши, и из командной строки (Ctrl-E).
+// command - действие, доступное и с клавиши, и из командной строки (Ctrl-E).
 type command struct {
 	id        string
 	title     string
@@ -118,7 +118,7 @@ func (m *Model) commands() []command {
 	return cs
 }
 
-// navCommands — движения курсора тоже команды: клавиши не содержат логики.
+// navCommands - движения курсора тоже команды: клавиши не содержат логики.
 func (m *Model) navCommands() []command {
 	type spec struct {
 		id, title, titleEN, key string
@@ -184,7 +184,7 @@ func (m *Model) navCommands() []command {
 	return out
 }
 
-// smartHome — Home на первый непробельный символ, повторно — в колонку 0.
+// smartHome - Home на первый непробельный символ, повторно - в колонку 0.
 func (m *Model) smartHome(extend bool) {
 	t := m.tab()
 	if t == nil {
@@ -216,7 +216,7 @@ func (m *Model) afterMove() {
 	m.scheduleGhost()
 }
 
-// moveParagraph — Alt-{ / Alt-}: к предыдущему/следующему пустому разделителю.
+// moveParagraph - Alt-{ / Alt-}: к предыдущему/следующему пустому разделителю.
 func (m *Model) moveParagraph(delta int, extend bool) {
 	t := m.tab()
 	if t == nil || delta == 0 {
@@ -250,7 +250,7 @@ func (m *Model) moveParagraph(delta int, extend bool) {
 	m.clampScroll()
 }
 
-// filterCommands — подстрока и подпоследовательность, префикс важнее.
+// filterCommands - подстрока и подпоследовательность, префикс важнее.
 // Ищем по id и обоим названиям: русский запрос находит английский UI и наоборот.
 func filterCommands(all []command, query string) []command {
 	q := strings.TrimSpace(query)
@@ -311,7 +311,7 @@ func isSubsequence(s, q string) bool {
 	return j == len(rq)
 }
 
-// runCommand — единственный путь выполнения: и клавиши, и палитра идут через реестр.
+// runCommand - единственный путь выполнения: и клавиши, и палитра идут через реестр.
 func (m *Model) runCommand(id string) tea.Cmd {
 	for _, c := range m.commands() {
 		if c.id == id {
@@ -336,7 +336,7 @@ func (m *Model) rememberCommand(id string) {
 	m.recentCmds = out
 }
 
-// defaultBindings — карта клавиш из docs/UX/Карта клавиш.md.
+// defaultBindings - карта клавиш из docs/UX/Карта клавиш.md.
 func defaultBindings() map[string]string {
 	return map[string]string{
 		"ctrl+s":         "file.save",
